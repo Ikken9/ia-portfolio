@@ -1,0 +1,77 @@
+---
+title: "Multi-Framework Neural Network Implementation"
+description: "Comparative analysis of neural networks across Scikit-learn, TensorFlow, and PyTorch Lightning frameworks"
+tags: ["MLP", "TensorFlow", "PyTorch", "Scikit-learn", "Comparative Analysis"]
+---
+
+# Neural Network Implementation Across Multiple Frameworks
+Developing neural networks across different deep learning frameworks reveals distinct advantages and trade-offs in
+implementation complexity, performance characteristics, and development workflow. This comprehensive analysis compares
+three prominent frameworks—Scikit-learn, TensorFlow/Keras, and PyTorch Lightning—using a standardized binary
+classification task to evaluate their respective capabilities and use cases.
+
+## Experimental Design and Dataset
+The evaluation employs a synthetic binary classification dataset carefully constructed to simulate real-world machine
+learning challenges. The dataset comprises 1,000 instances with 20 feature dimensions, of which 15 represent meaningful
+predictive signals while the remaining 5 serve as noise variables. This configuration mimics typical real-world
+scenarios where only a subset of features carries genuine predictive power.
+
+## Framework Implementation Analysis
+### Scikit-learn MLP Classifier
+Scikit-learn's neural network implementation prioritizes simplicity and integration within the broader Scikit-learn
+ecosystem. The architecture employed a two-hidden-layer design with 64 and 32 neurons
+respectively, utilizing ReLU activation functions for non-linear transformations and the Adam optimizer for efficient
+gradient-based learning.
+
+The model demonstrated perfect training accuracy, achieving 100% on the training set, while maintaining a respectable
+90.3% accuracy on the test set. The 9.7 percentage point generalization gap indicates some degree of overfitting, though
+the performance remains practically useful for many applications. This implementation excels in scenarios where
+development speed and integration with existing Scikit-learn workflows are primary considerations.
+
+### TensorFlow/Keras Implementation
+TensorFlow with Keras provides a more granular approach to neural network development. The implementation followed a
+sequential model architecture with dense layers of 64 and 32 neurons, using ReLU activations in hidden layers and
+sigmoid activation in the output layer for binary classification.
+
+The training configuration employed Adam optimization with default parameters, binary cross-entropy loss function, and
+a batch size of 32 samples per gradient update over 50 training epochs. This setup achieved perfect training accuracy
+while maintaining test accuracy between 93.3% and 94.0% across different epochs, with a total of 4,545 trainable
+parameters. The framework's built-in monitoring capabilities provided detailed insights into training dynamics through
+loss and accuracy curves.
+
+### PyTorch Lightning Implementation
+PyTorch Lightning emphasizes code organization, reproducibility, and scalability through a structured approach to model
+development. The implementation defined a custom neural network class inheriting from LightningModule, encapsulating the
+model architecture, training logic, and evaluation procedures in a single, organized structure.
+
+The network architecture mirrored the other implementations with 64 and 32 neuron hidden layers using ReLU activations,
+trained with Adam optimization at a 0.001 learning rate and cross-entropy loss. Remarkably, this implementation achieved
+the highest test accuracy of 94.7% with only 3,490 parameters, demonstrating superior parameter efficiency.
+The deterministic training configuration ensured reproducible results across multiple runs, while the clear separation
+of training and testing logic enhanced code maintainability.
+
+## Performance Comparison and Insights
+The comparative analysis revealed distinct performance characteristics across the three frameworks. All implementations
+achieved perfect training accuracy, indicating sufficient model capacity for the classification task. However, test
+performance varied significantly, with PyTorch Lightning achieving the highest generalization accuracy at 94.7%,
+followed by TensorFlow at 93.3-94.0%, and Scikit-learn at 90.3%.
+
+Parameter efficiency emerged as a notable differentiator, with PyTorch Lightning accomplishing superior performance
+using approximately 30% fewer parameters than TensorFlow. This efficiency suggests potential advantages in
+resource-constrained environments or when deploying models to production systems with computational limitations.
+
+Training dynamics also varied across frameworks. TensorFlow provided the most comprehensive monitoring capabilities
+with real-time loss and accuracy visualization, while PyTorch Lightning offered superior reproducibility through
+deterministic training configurations. Scikit-learn, while offering limited training visibility, provided the most
+straightforward implementation process.
+
+## Confusion Matrix
+<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_6.png`} alt="customer clusters" />
+
+This framework comparison underscores that the optimal choice depends heavily on project-specific requirements,
+team expertise, and deployment constraints rather than absolute performance metrics alone. Each framework occupies a
+distinct niche in the machine learning development landscape, offering complementary strengths for different stages of
+the model development lifecycle.
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut2/07-mlp-activaciones/#actividad-2-tensorflow-red-profesional
+- **Colab Link:** https://colab.research.google.com/drive/1q-Sow_HFDaNKJFGvoxff2exRPnP-rD3u?usp=sharing

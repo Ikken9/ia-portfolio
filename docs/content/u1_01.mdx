@@ -1,0 +1,58 @@
+---
+title: "Exploratory Data Analysis: Titanic Dataset Investigation"
+description: "Comprehensive data exploration and pattern identification in survival data"
+tags: ["EDA", "Pandas", "Seaborn", "Matplotlib"]
+---
+
+# Data Exploration: Uncovering Survival Patterns in the Titanic Dataset
+Exploratory Data Analysis forms the foundation of any successful machine learning project. This analysis systematically
+examines the Titanic dataset to identify key patterns, relationships, and data quality issues that impact survival
+prediction.
+
+## Analysis Objectives
+- Understand dataset structure and identify target variable (Survived)
+- Explore feature distributions and relationships
+- Identify factors influencing survival rates
+- Assess data quality challenges and missing values
+- Analyze correlations between variables
+
+## Key Findings from Visual Analysis
+Data visualization reveals clear survival patterns across passenger demographics:
+
+<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_01_1.png`} alt="survival analysis visualizations" />
+
+## Critical Survival Factors Identified
+**Primary Influencing Factors:**
+- **Gender:** Strong correlation with survival - female passengers had significantly higher survival rates
+- **Passenger Class:** Lower class numbers (1st class) correlated with higher survival probability
+- **Age:** Survival peak among passengers aged 20-30 years
+
+## Data Quality Assessment
+**Major Data Challenges:**
+- Missing values across multiple columns, particularly Age
+- Incomplete records for Cabin and Embarkation information
+- Potential accuracy issues in historical passenger data
+
+**Missing Value Strategy:**
+Age missing values could be imputed using statistical methods (mean/median) or advanced techniques like K-nearest
+neighbors, though implementation complexity varies.
+
+## Correlation Analysis
+**Variables Showing Strong Relationship with Survival:**
+- Fare (strongest correlation)
+- Passenger Class
+- Gender
+
+**Inter-correlated Features:**
+Gender, Age, and Passenger Class demonstrate significant internal correlations that must be considered in modeling.
+
+## Hypothesis Generation for Further Testing
+
+The analysis suggests several testable hypotheses:
+- Survival probability follows specific demographic patterns
+- Missing data mechanisms may be non-random
+- Feature engineering could capture additional survival signals
+
+Further investigation could compare imputation methods and validate patterns against known historical records.
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut1/01-eda-titanic/
+- **Colab Link:** https://colab.research.google.com/drive/1Bu0bvfkNYXTXb8_qgIgU76Td7iXuztW5?usp=sharing

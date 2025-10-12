@@ -1,0 +1,66 @@
+---
+title: "Classification Model Comparison: Baseline vs Logistic Regression"
+description: "Practical implementation of machine learning classifiers with performance analysis"
+tags: ["Logistic Regression", "Classifier", "Scikit", "Pandas"]
+---
+
+# Model Performance Analysis: Establishing Baselines and Building Classifiers
+Every effective machine learning project starts with establishing performance baselines. Without comparing against
+simple benchmarks, you can't measure true model improvement. This implementation demonstrates the critical practice of
+building both baseline and logistic regression models on the Titanic dataset.
+
+## Core Implementation
+We implement two modeling approaches to establish performance comparison:
+- Baseline classifier (predicts majority class)
+- Logistic Regression with feature engineering
+
+The comparison reveals whether increased model complexity delivers actual value.
+
+## Performance Results
+
+**Accuracy Comparison:**
+- Baseline Model: 61.5% accuracy
+- Logistic Regression: 81.6% accuracy
+
+The 20-point improvement demonstrates the value of proper feature engineering and model selection.
+
+**Detailed Classification Metrics:**
+
+| Class        | Precision | Recall | F1 Score | Support |
+|:-------------|:---------:|:------:|:--------:|:-------:|
+| Non-Survivors | 0.82     | 0.89   | 0.86     | 110     |
+| Survivors     | 0.80     | 0.70   | 0.74     | 69      |
+| Accuracy      | -        | -      | 0.82     | 179     |
+
+**Confusion Matrix:**
+```
+[[98 12]
+ [21 48]]
+```
+
+## Key Findings
+
+- **Class Performance Gap:** Model detects non-survivors (89% recall) significantly better than survivors (70% recall)
+- **Error Distribution:** More false positives (12) than false negatives (21)
+- **Practical Significance:** 20% accuracy gain over baseline justifies model complexity
+
+## Critical Analysis
+
+The performance difference between classes suggests feature engineering opportunities. The model leverages patterns in
+passenger class and gender, but additional features could address the survivor detection gap.
+
+**Potential Improvements:**
+- Add "IsAlone" feature for passengers traveling solo
+- Extract passenger titles from names as categorical features
+- Address class imbalance in training data
+
+## Technical Implementation
+
+Complete code available in Colab notebook demonstrating:
+- Data preprocessing and feature selection
+- Baseline model implementation
+- Logistic Regression with scikit-learn
+- Comprehensive model evaluation
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut1/02-feature-modelo-base/
+- **Colab Link:** https://colab.research.google.com/drive/1roxukXgEFmbe2VFijhNwDxM2eH-qttCh?usp=sharing

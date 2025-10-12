@@ -1,0 +1,176 @@
+---
+title: "Perceptron Fundamentals and MLP Architecture"
+description: "From single neurons to multi-layer networks: Understanding linear separability and the XOR problem"
+tags: ["Perceptron", "MLP", "XOR Problem", "Neural Networks", "Linear Separability"]
+---
+
+# Neural Network Foundations: From Single Perceptrons to Multi-Layer Architectures
+Understanding the limitations of single neurons and the power of multi-layer networks forms the cornerstone of modern
+deep learning. This exploration demonstrates why certain problems require more complex architectures through visual
+experimentation with basic logic gates.
+
+## Perceptron Implementation and Logic Gates
+The fundamental perceptron function implements a simple binary classifier:
+
+```python
+def perceptron(x1, x2, w1, w2, bias):
+    return 1 if (w1*x1 + w2*x2 + bias) &ge; 0 else 0
+```
+
+### AND Gate Implementation
+
+| x1 | x2 | AND |
+|----|----|-----|
+| 0  | 0  | 0   |
+| 0  | 1  | 0   |
+| 1  | 0  | 0   |
+| 1  | 1  | 1   |
+
+**Successful Configuration:**
+- **Weights:** w1=0.5, w2=0.5, bias=-0.6
+- **Accuracy:** 100% (4/4 correct predictions)
+
+The AND gate demonstrates linear separability with a single decision boundary that successfully classifies all inputs.
+
+<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_1.png`} alt="and" />
+
+### OR Gate Implementation
+
+| x1 | x2 | OR |
+|----|----|----|
+| 0  | 0  | 0  |
+| 0  | 1  | 1  |
+| 1  | 0  | 1  |
+| 1  | 1  | 1  |
+
+**Successful Configuration:**
+- **Weights:** w1=0.5, w2=0.5, bias=-0.4
+- **Accuracy:** 100% (4/4 correct predictions)
+
+The OR gate also proves linearly separable with an appropriate bias adjustment.
+
+<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_2.png`} alt="or" />
+
+### NOT Gate Implementation
+
+| x | NOT |
+|---|-----|
+| 0 | 1   |
+| 1 | 0   |
+
+**Successful Configuration:**
+- **Weight:** w1=-1, bias=0.5
+- **Accuracy:** 100% (2/2 correct predictions)
+
+The single-input NOT gate operates with a threshold mechanism in one dimension.
+
+<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_3.png`} alt="not" />
+
+## The Fundamental Limitation: XOR Problem
+
+### XOR Gate Challenge
+
+| x1 | x2 | XOR |
+|----|----|-----|
+| 0  | 0  | 0   |
+| 0  | 1  | 1   |
+| 1  | 0  | 1   |
+| 1  | 1  | 0   |
+
+**Experimental Results:**
+- Multiple weight configurations tested
+- **Best performance:** 3/4 correct (75% accuracy)
+- No single-line solution found
+
+### Weight Configuration Attempts
+
+| Attempt | w1 | w2 | bias | Accuracy |
+|---------|----|----|------|----------|
+| 1 | 1.0 | 1.0 | -0.5 | 75% |
+| 2 | 1.0 | 1.0 | -1.5 | 75% |
+| 3 | 0.5 | 0.5 | -0.1 | 75% |
+| 4 | 1.0 | -1.0 | 0.5 | 75% |
+
+### Visual Proof of Impossibility
+The XOR problem demonstrates the critical limitation of single-layer perceptrons: they cannot solve non-linearly
+separable problems. All attempted linear boundaries failed to correctly classify all four XOR patterns.
+
+<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_4.png`} alt="xor" />
+
+**Key Insight:** No straight line can separate the XOR classes (red circles at (0,0) and (1,1) from blue squares at (0,1) and (1,0)).
+
+## Multi-Layer Perceptron Solution
+
+### MLP Architecture for XOR
+```python
+mlp_xor = MLPClassifier(
+    hidden_layer_sizes=(4,),    # 4 neurons in hidden layer
+    activation='tanh',          # Non-linear activation
+    solver='adam',              # Optimization algorithm
+    random_state=42,
+    max_iter=2000
+)
+```
+
+**Network Architecture:**
+- **Input layer:** 2 neurons (x1, x2)
+- **Hidden layer:** 4 neurons with tanh activation
+- **Output layer:** 1 neuron (XOR classification)
+
+### Parameter Breakdown
+
+| Layer | Connection | Parameters |
+|:------|------------|------------|
+| 1 | 2 → 4 | 12 |
+| 2 | 4 → 1 | 5 |
+| **Total** | | **17** |
+
+### MLP Performance Results
+
+| x1  | x2  | Expected | Prediction | Result |
+|:---:|:---:|:--------:|:----------:|:------:|
+|  0  |  0  |     0    |      0     |    ✓   |
+|  0  |  1  |     1    |      1     |    ✓   |
+|  1  |  0  |     1    |      1     |    ✓   |
+|  1  |  1  |     0    |      0     |    ✓   |
+
+**Results:**
+- **Training accuracy:** 100%
+- Perfect XOR classification achieved
+- Convergence achieved despite initial warnings
+
+<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_5.png`} alt="xor" />
+
+## Decision Boundary Comparison
+
+### Single Perceptron vs MLP
+
+| Aspect | Perceptron | MLP |
+|--------|------------|-----|
+| Decision Boundary | Straight line only | Complex curved surfaces |
+| XOR Solution | Impossible | 100% accuracy |
+| Problem Type | Linearly separable only | Non-linearly separable |
+| Architecture | Single layer | Multiple hidden layers |
+
+### Visual Analysis
+The comparison shows:
+- **Red zones** = prediction 0 (class 0)
+- **Blue zones** = prediction 1 (class 1)
+- **Perceptron:** Restricted to linear separation
+- **MLP:** Flexible non-linear separation capability
+
+## Architectural Implications
+**Why MLPs Succeed:**
+1. **Multiple Decision Boundaries:** Hidden layers create intermediate representations
+2. **Non-Linear Activations:** Functions like tanh enable curve fitting
+3. **Parameter Richness:** Multiple weights allow complex feature combinations
+
+**The XOR Breakthrough:**
+The solution to XOR represents a fundamental milestone in neural network history, demonstrating why multi-layer
+architectures are essential for real-world problems that rarely exhibit perfect linear separability.
+
+This foundational understanding bridges the gap between simple perceptrons and modern deep learning architectures,
+highlighting the importance of depth and non-linearity in solving complex pattern recognition tasks.
+
+- **Original Proposal:** http://juanfkurucz.com/ucu-ia/ut2/07-mlp-activaciones/
+- **Colab Link:** https://colab.research.google.com/drive/1gdV3H57nuUHPNVwKBuUrphkS0ad-i7dr?usp=sharing

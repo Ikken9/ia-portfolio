@@ -1,0 +1,95 @@
+---
+title: "MLP Architecture Visualization and Decision Boundaries"
+description: "Visualizing neural network architectures and comparing decision surfaces between perceptrons and MLPs"
+tags: ["MLP", "Neural Networks", "Architecture Visualization", "Decision Boundaries", "XOR Problem"]
+---
+
+# Neural Network Architecture and Decision Surface Analysis
+Visualizing network architectures and understanding decision boundaries provides crucial insights into how multi-layer
+perceptrons overcome the limitations of single neurons. This analysis demonstrates the architectural complexity required
+to solve non-linearly separable problems like XOR.
+
+## MLP Implementation for XOR Solution
+The MLP classifier was configured with a hidden layer of 4 neurons using tanh activation and Adam optimization. This
+architecture successfully learned to solve the XOR problem with perfect accuracy, demonstrating that multi-layer
+networks can capture non-linear relationships that single perceptrons cannot.
+
+**Network Configuration:**
+- **Hidden Layer:** 4 neurons with tanh activation
+- **Optimizer:** Adam for efficient gradient-based learning
+- **Training:** 2000 maximum iterations with random state 42 for reproducibility
+
+### XOR Classification Performance
+The MLP achieved 100% accuracy on all four XOR patterns, correctly classifying:
+- (0,0) → 0
+- (0,1) → 1
+- (1,0) → 1
+- (1,1) → 0
+
+This perfect performance contrasts sharply with single perceptrons, which consistently failed to achieve better
+than 75% accuracy on the same problem.
+
+## Neural Network Architecture Visualization
+
+### MLP Architecture: 2-4-1 Configuration
+The network employs a three-layer architecture with 2 input neurons (representing the XOR inputs x₁ and x₂), 4 hidden
+neurons for feature transformation, and 1 output neuron for the final classification decision.
+
+**Parameter Analysis:**
+- **Layer 1:** 12 parameters (2 inputs × 4 hidden + 4 bias terms)
+- **Layer 2:** 5 parameters (4 hidden × 1 output + 1 bias term)
+- **Total Parameters:** 17 trainable weights and biases
+
+This parameter count represents the minimal complexity needed to solve XOR while maintaining efficient training. Each
+connection weight and bias term contributes to the network's ability to create the necessary non-linear decision boundary.
+
+## Decision Boundary Comparison
+
+### Single Perceptron Limitations
+
+Single-layer perceptrons are fundamentally limited to straight-line decision boundaries. Even with optimized
+weights (w₁=1, w₂=1, bias=-1.5), the best possible linear separation still misclassifies one of the four XOR patterns. This visual demonstration confirms the theoretical limitation of linear classifiers for non-linearly separable problems.
+
+### Multi-Layer Perceptron Advantages
+
+The MLP creates complex, curved decision boundaries that successfully separate all XOR patterns. The visualization
+shows distinct classification regions where:
+- Red areas indicate class 0 predictions
+- Blue areas indicate class 1 predictions
+- The boundary curves adaptively to enclose each class
+
+This non-linear separation capability emerges from the hidden layer's transformation of the input space, allowing
+the network to learn intermediate features that enable correct classification.
+
+## Architectural Insights
+
+### Why MLPs Succeed Where Perceptrons Fail
+
+The key advantage of MLPs lies in their representational power. Hidden layers create intermediate feature
+representations that transform the input space, while non-linear activation functions enable the network to approximate complex decision boundaries. The 17 parameters in this architecture provide sufficient flexibility to shape these boundaries appropriately for the XOR problem.
+
+**Training Considerations:**
+- The Adam optimizer efficiently navigates the parameter space
+- Tanh activation provides smooth gradients for stable learning
+- Despite the small dataset, the network converges to a perfect solution
+
+## Practical Implications
+
+### Model Selection Guidelines
+
+For linearly separable problems, single perceptrons offer computational efficiency and simplicity. However, for
+non-linear patterns like XOR, even a minimal MLP with one hidden layer provides the necessary representational power.
+More complex problems may require deeper architectures with multiple hidden layers or specialized network types like
+convolutional neural networks.
+
+### Architectural Trade-offs
+
+The 2-4-1 MLP represents an optimal balance for the XOR problem—sufficient capacity to learn the solution while
+minimizing parameter count for efficient training. This architecture demonstrates the fundamental principle that
+solving non-linearly separable problems requires both multiple layers and non-linear activation functions.
+
+This visualization and analysis provides the foundation for understanding how neural network architecture choices
+directly impact problem-solving capability, from simple linear classification to complex non-linear pattern recognition.
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut2/07-mlp-activaciones/#parte-2-herramientas-reales
+- **Colab Link:** https://colab.research.google.com/drive/1vmy6G7v2eF_bxeB2d8VbNmpv--lIbQCT?usp=sharing

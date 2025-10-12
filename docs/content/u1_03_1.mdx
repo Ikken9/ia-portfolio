@@ -1,0 +1,52 @@
+---
+title: "Linear Regression Implementation: Housing Price Prediction"
+description: "Building and evaluating regression models for real estate price estimation"
+tags: ["Linear Regression", "Scikit", "Pandas", "Matplotlib", "Numpy"]
+---
+
+# Housing Price Prediction with Linear Regression
+Linear regression serves as the fundamental building block for predictive modeling. This implementation demonstrates a
+complete regression pipeline on housing price data, from data loading to model evaluation and performance interpretation.
+
+## Implementation Overview
+This project constructs a linear regression model using a housing prices dataset, with comprehensive evaluation across
+multiple error metrics to assess predictive accuracy and model reliability.
+
+## Model Performance Results
+The linear regression model was trained on 404 houses and tested on 102 holdout samples, producing the following
+evaluation metrics:
+
+**Error Metrics:**
+- **MAE (Mean Absolute Error):** $3.19k
+- **MSE (Mean Squared Error):** 24.29
+- **RMSE (Root Mean Squared Error):** $4.93k
+- **R² (Coefficient of Determination):** 0.669
+- **MAPE (Mean Absolute Percentage Error):** 16.9%
+
+**Sample Predictions vs Actual Values:**
+- House 1: Actual $23.6k vs Predicted $29.0k
+- House 2: Actual $32.4k vs Predicted $36.0k
+- House 3: Actual $13.6k vs Predicted $14.8k
+- House 4: Actual $22.8k vs Predicted $25.0k
+- House 5: Actual $16.1k vs Predicted $18.8k
+
+## Model Interpretation
+**R² Analysis:**
+The 0.669 R² score indicates the model explains approximately 67% of the variance in housing prices, representing a moderate predictive capability for a baseline linear model.
+
+**Error Metric Context:**
+- MAPE of 16.9% suggests the average prediction error is about 17% of the actual home value
+- RMSE of $4.93k provides the standard deviation of prediction errors in dollar terms
+- MAE of $3.19k represents the average absolute prediction error
+
+## Technical Implementation
+
+The regression pipeline includes:
+- Data loading and exploratory analysis
+- Feature selection and preprocessing
+- Linear regression implementation using scikit-learn
+- Comprehensive model evaluation across five error metrics
+- Prediction analysis and error distribution examination
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut1/04-regresion-lineal-logistica/
+- **Colab Link:** https://colab.research.google.com/drive/1OsfcYvkzpRBoyIKvZn5maqLjHxUXFB35?usp=sharing

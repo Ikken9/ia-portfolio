@@ -1,0 +1,127 @@
+---
+title: "Neural Network Architecture and Optimization Experiments"
+description: "Comprehensive analysis of MLP architectures, optimizers, and training strategies on CIFAR-10"
+tags: ["ANN", "MLP", "ReLU", "Tanh", "Optimizers", "Backpropagation"]
+---
+
+# Neural Network Optimization: From Basic MLPs to Advanced Training Techniques
+
+Building effective neural networks requires careful consideration of architecture design, optimization algorithms, and
+training strategies. This experimental study systematically evaluates different components of deep learning pipelines
+using CIFAR-10 image classification as the benchmark task.
+
+## Experimental Framework
+
+The CIFAR-10 dataset was preprocessed with pixel values normalized to `[-1, 1]` and flattened into 3072-element vectors
+to accommodate Multi-Layer Perceptron (MLP) architectures. A baseline model with two dense layers of 64 neurons each
+established the performance reference point for comparative analysis.
+
+## Architecture and Initialization Experiments
+
+The first phase focused on architectural variations and initialization strategies:
+
+**Architecture Modifications:**
+- **Depth Exploration:** Networks with additional hidden layers beyond the baseline 2-layer structure
+- **Width Expansion:** Increased neuron counts per layer to enhance representational capacity
+- **Activation Functions:** Comparative analysis of tanh and GELU against standard ReLU
+- **Weight Initialization:** He Normal initialization specifically optimized for ReLU-based architectures
+
+**Regularization Techniques:**
+- **Dropout Implementation:** Strategic placement of dropout layers to prevent overfitting
+- **Batch Normalization:** Layer normalization for stabilizing internal activations and accelerating convergence
+- **L2 Regularization:** Weight penalty terms to constrain model complexity
+
+**Key Insight:** While architectural complexity and regularization improved training metrics, the translation to
+validation performance was inconsistent, revealing the fundamental challenge of overfitting with MLP architectures on
+image data.
+
+## Optimizer Performance Analysis
+
+The second phase maintained fixed architectures while systematically evaluating optimization algorithms:
+
+**Adam Optimization:**
+- Learning rate sweep from 1e-2 (unstable) to 5e-4 (slow convergence)
+- Optimal performance achieved around 1e-3, balancing training speed and stability
+- Demonstrated rapid convergence characteristics
+
+**SGD Variants:**
+- Standard Stochastic Gradient Descent with momentum values ranging 0.5-0.9
+- Nesterov momentum implementation for improved convergence properties
+- Exhibited slower learning dynamics but more stable training trajectories
+- Required extensive hyperparameter tuning for competitive performance
+
+**Alternative Optimizers:**
+- **RMSprop:** Effective gradient variance normalization, particularly useful for unstable gradients
+- **AdamW:** Decoupled weight decay implementation showing superior generalization capabilities
+- **Performance Summary:** Adam and AdamW provided fastest convergence, while SGD offered robustness at the cost of performance
+
+## Callback Implementation and Training Control
+
+The third phase introduced automated training control mechanisms:
+
+**Early Stopping:** Configuration with patience parameters to halt training when validation metrics plateaued,
+effectively preventing overfitting and optimizing computational resources.
+
+**Learning Rate Scheduling:**
+- **ReduceLROnPlateau:** Dynamic learning rate reduction based on validation loss plateaus
+- **Cosine Decay:** Structured learning rate decay following cosine annealing schedule
+- **Impact:** Enabled escape from local minima and improved final convergence points
+
+**Model Checkpointing:** Automated preservation of best-performing models based on validation accuracy, ensuring optimal
+model selection.
+
+**Training Dynamics:** The integration of callbacks resulted in more robust training processes with appropriate
+termination points, smoother convergence patterns, and systematic model version control.
+
+## Comprehensive Performance Results
+
+Experimental results consolidated in `experiment_results.csv` revealed the top-performing configurations:
+
+| Rank | Experiment                       | Test Acc | Val Acc | Train Acc | Parameters | Time (s) |
+|------|----------------------------------|---------:|--------:|----------:|-----------:|---------:|
+| 1    | Combined Callbacks Best Config   | 54.30%   | 54.86%  | 63.58%    | 830,026    | 160.4    |
+| 2    | Cosine Decay Scheduling          | 52.23%   | 52.12%  | 56.76%    | 418,762    | 62.9     |
+| 3    | Early Stopping (Patience 5)      | 51.42%   | 51.54%  | 60.78%    | 418,762    | 145.5    |
+| 4    | SGD with Momentum (lr=1e-2)      | 51.20%   | 50.72%  | 64.33%    | 418,762    | 64.5     |
+| 5    | RMSprop (lr=1e-04)               | 50.98%   | 50.88%  | 62.63%    | 418,762    | 55.0     |
+
+## Final Model Performance and Analysis
+
+The optimal configuration combining He initialization, comprehensive regularization, AdamW optimization, and callback integration achieved:
+- **Training Accuracy:** 71.99%
+- **Validation Accuracy:** 57.54%
+- **Test Accuracy:** 55.98%
+
+This represents a significant improvement over initial experiments but reveals a substantial generalization gap
+(&gt;16 percentage points between training and test performance), indicating persistent overfitting challenges.
+
+## Error Analysis and Limitations
+
+**Class-wise Performance:** Confusion matrix analysis revealed significant variation in classification accuracy across
+different CIFAR-10 categories, with certain classes proving substantially more challenging than others.
+
+**Architectural Constraints:** The fundamental limitation of MLP architectures became apparent—their inability to
+effectively leverage spatial structure and local correlations in image data.
+
+**Training Dynamics:** While callbacks successfully stabilized training and improved model selection, they could not
+overcome the architectural limitations for this computer vision task.
+
+## Conclusions and Future Directions
+**Key Learnings:**
+- Systematic component evaluation provides crucial insights into deep learning pipeline behavior
+- Optimizer selection significantly impacts both convergence speed and final performance
+- Callback mechanisms are essential for robust, automated training processes
+- Architectural choices fundamentally constrain achievable performance
+
+**Recommended Advancements:**
+- **Architectural Evolution:** Transition to Convolutional Neural Networks for spatial feature extraction
+- **Data Enhancement:** Implementation of data augmentation techniques for training set diversification
+- **Transfer Learning:** Leveraging pre-trained models and feature representations
+- **Hyperparameter Optimization:** Systematic search strategies for optimal configuration discovery
+
+This comprehensive experimental framework demonstrates the iterative nature of deep learning development, where
+systematic evaluation of individual components builds the foundational understanding necessary for advancing to more
+sophisticated architectures and training methodologies.
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut2/08-backpropagation-optimizadores/
+- **Colab Link:** https://colab.research.google.com/drive/1byobj56WEfiqzvmD9AKplGGUBTujdWdE?usp=sharing

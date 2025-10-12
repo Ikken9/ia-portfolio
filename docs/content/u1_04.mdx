@@ -1,0 +1,70 @@
+---
+title: "Model Validation and Selection: Preventing Data Leakage"
+description: "Cross-validation pipeline implementation for robust model comparison"
+tags: ["Cross Validation", "K-Fold", "Random Forest", "Data Leakage"]
+---
+
+# Robust Model Evaluation with Cross-Validation Pipelines
+Proper model validation requires preventing data leakage and ensuring reliable performance estimates. This
+implementation demonstrates systematic model comparison using cross-validation pipelines to identify the optimal
+classifier while maintaining data integrity.
+
+## Model Performance Analysis
+Three classifiers were evaluated using StratifiedKFold (5 folds) with accuracy as the primary metric:
+
+**Cross-Validation Results:**
+- **Random Forest:** 0.7658 ± 0.0064
+- **Logistic Regression:** 0.7618 ± 0.0061
+- **Ridge Classifier:** 0.7509 ± 0.0032
+
+<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_04_1.png`} alt="model comparison scores" />
+
+<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_04_2.png`} alt="accuracy distribution across folds" />
+
+## Model Selection Insights
+**Performance Ranking:**
+- Random Forest achieves highest mean accuracy (0.7658)
+- Logistic Regression demonstrates competitive performance (0.7618)
+- Ridge Classifier shows lowest accuracy but highest stability
+
+**Stability Analysis:**
+All models exhibit low standard deviations (&lt;0.01), indicating consistent performance across folds. Ridge Classifier
+demonstrates the smallest variance (±0.0032), suggesting reliable predictions despite lower accuracy.
+
+## Technical Implementation
+**Cross-Validation Strategy:**
+- StratifiedKFold with 5 folds maintains class distribution
+- Pipeline integration prevents data leakage during preprocessing
+- Systematic comparison across multiple classifier types
+
+**Key Findings:**
+- Random Forest emerges as optimal for this dataset, balancing performance and stability
+- Logistic Regression provides strong alternative with similar accuracy
+- Ridge Classifier offers maximum consistency for stability-critical applications
+
+## Critical Concepts in Model Validation
+**Data Leakage Prevention:**
+Data leakage occurs when models access test set information during training, creating overly optimistic performance
+estimates that fail to generalize to real-world data.
+
+**Fold Strategy Selection:**
+- **KFold:** Suitable for balanced datasets, simple random partitioning
+- **StratifiedKFold:** Essential for imbalanced classes, preserves minority class representation
+
+**Performance Interpretation:**
+Metrics like "95.2% ± 2.1%" indicate mean performance with variability across folds. Smaller standard deviations
+suggest more reliable, consistent models.
+
+## Model-Specific Considerations
+
+**Random Forest Characteristics:**
+- Inherently scale-invariant, eliminating need for StandardScaler
+- Uses threshold comparisons rather than distance-based calculations
+- Robust to feature scaling variations
+
+**Stability vs Performance Trade-off:**
+In critical applications like medical diagnosis, consistent 95% accuracy may be preferable to unstable 98% performance
+due to reliability requirements.
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut1/05-validacion-seleccion-modelos/
+- **Colab Link:** https://colab.research.google.com/drive/1cFAjRmqcqu3bhxJ3nNQphKIY2vYG0RR-?usp=sharing

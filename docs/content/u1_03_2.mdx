@@ -1,0 +1,70 @@
+---
+title: "Logistic Regression Implementation: Breast Cancer Diagnosis"
+description: "Binary classification for medical diagnosis using logistic regression"
+tags: ["Logistic Regression", "Scikit", "Pandas", "Matplotlib", "Numpy"]
+---
+
+# Medical Diagnosis Classification with Logistic Regression
+Logistic regression provides a robust foundation for binary classification problems, particularly in medical
+applications where interpretability and reliability are crucial. This implementation demonstrates a complete
+classification pipeline for breast cancer diagnosis.
+
+## Model Performance Results
+Trained on 455 patient records and tested on 114 holdout samples, the logistic regression model achieved:
+
+**Overall Performance:**
+- **Accuracy:** 95.6%
+- **Precision:** 94.6%
+- **Recall:** 98.6%
+- **F1-Score:** 0.966
+
+**Confusion Matrix:**
+```
+[[39  4]
+ [ 1 70]]
+```
+
+**Detailed Classification Report:**
+
+| Class    | Precision | Recall | F1 Score | Support |
+|:---------|:---------:|:------:|:--------:|:-------:|
+| Malignant| 0.97      | 0.91   | 0.94     | 43      |
+| Benign   | 0.95      | 0.99   | 0.97     | 71      |
+| Accuracy | -         | -      | 0.96     | 114     |
+
+**Sample Predictions:**
+- Patient 1: Actual Benign vs Predicted Benign
+- Patient 2: Actual Malignant vs Predicted Malignant
+- Patient 3: Actual Malignant vs Predicted Malignant
+- Patient 4: Actual Benign vs Predicted Benign
+- Patient 5: Actual Benign vs Predicted Benign
+
+## Critical Performance Analysis
+
+**Recall Excellence:** 98.6% recall for benign cases demonstrates the model's strength in identifying true negative
+cases, crucial for minimizing unnecessary treatments.
+
+**Error Distribution:**
+- 4 false positives (malignant predicted as benign)
+- 1 false negative (benign predicted as malignant)
+
+**Clinical Significance:** The single false negative represents the most critical error type in medical
+diagnosis - missing an actual malignant case.
+
+## Technical Implementation
+
+The classification pipeline includes:
+- Medical dataset loading and preprocessing
+- Logistic regression implementation with scikit-learn
+- Comprehensive evaluation using accuracy, precision, recall, and F1-score
+- Confusion matrix analysis for error pattern identification
+- Model interpretation for clinical application
+
+## Key Differentiators from Linear Regression
+
+- **Output Type:** Logistic regression produces discrete class probabilities vs continuous numerical predictions
+- **Application:** Classification tasks (benign/malignant) vs regression tasks (housing prices)
+- **Evaluation:** Classification metrics (precision/recall) vs regression metrics (MAE/RMSE)
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut1/04-regresion-lineal-logistica/#parte-2-regresion-logistica-diagnostico-medico
+- **Colab Link:** https://colab.research.google.com/drive/15UoClSQDeo-ZfXIUUFm4rL0obU32awz_?usp=sharing

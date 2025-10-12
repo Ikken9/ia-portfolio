@@ -1,0 +1,58 @@
+---
+title: "Regression Comparison: Linear vs Logistic Applications"
+description: "Comparative analysis of regression techniques for different problem types"
+tags: ["Linear Regression", "Logistic Regression"]
+---
+
+# Model Selection Guide: Linear vs Logistic Regression
+Choosing the appropriate regression technique depends fundamentally on the problem type and output requirements. This
+comparative analysis examines the distinct applications, strengths, and limitations of linear versus logistic regression
+across different domains.
+
+## Technical Comparison
+
+| Aspect               | Linear Regression                     | Logistic Regression                   |
+|:---------------------|:-------------------------------------:|:-------------------------------------:|
+| Prediction Type      | Continuous values                     | Class probabilities                   |
+| Output Range         | -∞ to +∞ (unbounded real numbers)     | 0 to 1 (probability scores)           |
+| Primary Metrics      | RMSE, R², MAE                         | Accuracy, Precision, Recall, F1-Score |
+| Problem Domain       | Numerical prediction                  | Binary classification                 |
+
+## Practical Applications
+
+**Linear Regression Use Cases:**
+- Housing price prediction
+- Salary estimation
+- Sales forecasting
+- Any continuous numerical outcome
+
+**Logistic Regression Use Cases:**
+- Medical diagnosis (benign/malignant)
+- Spam email detection
+- Customer churn prediction
+- Any binary classification scenario
+
+## Implementation Examples
+
+**Case 1: Employee Salary Prediction**
+- **Recommended Model:** Linear Regression
+- **Justification:** Salary represents a continuous numerical value requiring unbounded prediction
+
+**Case 2: Email Spam Detection**
+- **Recommended Model:** Logistic Regression
+- **Justification:** Binary classification problem (spam/not spam) with probabilistic outputs
+
+## Critical Implementation Considerations
+
+**Train-Test Split Importance:**
+Separating data into training and testing sets is essential for evaluating model generalization capability. Using all
+data for training prevents accurate assessment of whether the model learned genuine patterns or simply memorized the
+training data (overfitting).
+
+**Model Selection Criteria:**
+- Output requirements (continuous vs categorical)
+- Problem domain (regression vs classification)
+- Evaluation metrics appropriate for the task
+- Interpretability needs for the application context
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut1/04-regresion-lineal-logistica/#parte-3-actividad-final-compara-los-dos-modelos
