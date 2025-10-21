@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Code2, ExternalLink, Github, Linkedin, ChevronDown } from 'lucide-react';
+import Link from "next/link";
 
 
 const ModernMLPortfolio = () => {
@@ -60,10 +61,10 @@ const ModernMLPortfolio = () => {
                         </p>
 
                         <div className="flex items-center justify-center gap-4">
-                            <a href="/projects" className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-semibold flex items-center gap-2 hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                            <Link href="/projects" className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-semibold flex items-center gap-2 hover:shadow-lg hover:shadow-purple-500/50 transition-all">
                                 View Projects
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </a>
+                            </Link>
                         </div>
                     </div>
 
