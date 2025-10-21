@@ -2,7 +2,11 @@
 title: "Model Validation and Selection: Preventing Data Leakage"
 description: "Cross-validation pipeline implementation for robust model comparison"
 tags: ["Cross Validation", "K-Fold", "Random Forest", "Data Leakage"]
+idx: 5
+author: "Piero Saucedo"
 ---
+
+import MDXImage from "src/components/MDXImage";
 
 Proper model validation requires preventing data leakage and ensuring reliable performance estimates. This
 implementation demonstrates systematic model comparison using cross-validation pipelines to identify the optimal
@@ -16,9 +20,8 @@ Three classifiers were evaluated using StratifiedKFold (5 folds) with accuracy a
 - **Logistic Regression:** 0.7618 ± 0.0061
 - **Ridge Classifier:** 0.7509 ± 0.0032
 
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_04_1.png`} alt="model comparison scores" />
-
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_04_2.png`} alt="accuracy distribution across folds" />
+<MDXImage src="/u1_04_1.png" alt="model comparison scores" />
+<MDXImage src="/u1_04_2.png" alt="accuracy distribution across folds" />
 
 ## Model Selection Insights
 **Performance Ranking:**

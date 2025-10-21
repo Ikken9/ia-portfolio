@@ -1,0 +1,146 @@
+---
+title: "Convolutional Neural Networks and Transfer Learning on CIFAR-10"
+description: "Comparative analysis of custom CNN architectures versus transfer learning approaches for image classification"
+tags: ["CNN", "Transfer Learning", "CIFAR-10", "Computer Vision", "Deep Learning"]
+idx: 11
+author: "Piero Saucedo"
+---
+
+Image classification represents one of the most fundamental applications of deep learning in computer vision.
+This comprehensive analysis compares two distinct approaches: building a custom convolutional neural network from
+scratch versus leveraging transfer learning with pre-trained models, using the CIFAR-10 dataset as the benchmark.
+
+## Experimental Setup and Dataset
+The CIFAR-10 dataset serves as an ideal benchmark for this comparison, containing 60,000 32x32 color images distributed
+across 10 object categories. The dataset was partitioned into 50,000 training images and 10,000 test images, with pixel
+values normalized to the [0,1] range and labels converted to one-hot encoding for multi-class classification.
+
+**Dataset Specifications:**
+- **Training Samples:** 50,000 images
+- **Test Samples:** 10,000 images
+- **Image Dimensions:** 32×32×3 (RGB)
+- **Classes:** 10 categories including airplanes, automobiles, birds, cats, deer, dogs, frogs, horses, ships, and trucks
+- **Batch Size:** 128 samples for efficient training
+
+## Model Architectures and Implementation
+
+### Custom CNN from Scratch
+
+The custom CNN architecture follows a classic convolutional neural network design pattern with progressive feature
+extraction and classification components:
+
+**Architecture Design:**
+- **Convolutional Block 1:** 32 filters (3×3) with ReLU activation, followed by 2×2 max pooling
+- **Convolutional Block 2:** 64 filters (3×3) with ReLU activation, followed by 2×2 max pooling
+- **Classifier:** Flattening layer, 512-unit dense layer with ReLU, 10-unit output with softmax
+
+**Training Configuration:**
+- **Optimizer:** Adam with learning rate 0.001
+- **Loss Function:** Categorical cross-entropy
+- **Parameters:** 2,122,186 total trainable parameters
+- **Callbacks:** Early stopping with 3-epoch patience for validation accuracy
+
+### Transfer Learning with ConvNeXtSmall
+
+The transfer learning approach leverages the ConvNeXtSmall architecture pre-trained on ImageNet, representing a modern
+convolutional network design:
+
+**Implementation Strategy:**
+- **Base Model:** ConvNeXtSmall with ImageNet weights, excluding top classification layers
+- **Feature Extraction:** Base model frozen during initial training phase
+- **Classifier:** Custom dense layer with 10-unit softmax output
+- **Training Configuration:** Adam optimizer with learning rate 0.001
+
+**Parameter Distribution:**
+- **Total Parameters:** 49,462,378
+- **Trainable Parameters:** 7,690 (only custom classifier layers)
+- **Frozen Parameters:** 49,454,688 (pre-trained feature extractor)
+
+## Training Performance and Convergence
+
+### Custom CNN Training Dynamics
+
+The custom CNN demonstrated strong learning capabilities with rapid convergence:
+- **Epoch 1:** 38.8% training accuracy, 60.5% validation accuracy
+- **Epoch 5:** 74.9% training accuracy, 67.1% validation accuracy
+- **Epoch 10:** 88.5% training accuracy, 69.4% validation accuracy
+- **Final Performance:** 69.4% test accuracy
+
+The training progression showed consistent improvement in both training and validation metrics, though a noticeable
+generalization gap emerged in later epochs.
+
+### Transfer Learning Training Patterns
+
+The transfer learning approach exhibited different learning characteristics:
+- **Epoch 1:** 12.1% training accuracy, 19.2% validation accuracy
+- **Epoch 5:** 21.7% training accuracy, 24.7% validation accuracy
+- **Epoch 10:** 25.7% training accuracy, 27.8% validation accuracy
+- **Final Performance:** 27.8% test accuracy
+
+The slower convergence and lower overall accuracy suggest potential incompatibility between the pre-trained features
+and the CIFAR-10 dataset characteristics.
+
+## Comparative Performance Analysis
+
+### Accuracy and Generalization
+
+**Final Test Performance:**
+- **Custom CNN:** 69.4% accuracy
+- **Transfer Learning:** 27.8% accuracy
+- **Performance Difference:** 41.6 percentage points in favor of custom CNN
+
+**Overfitting Analysis:**
+- **Custom CNN Overfitting Gap:** 0.191 (88.5% training vs 69.4% validation)
+- **Transfer Learning Overfitting Gap:** Minimal gap with aligned training/validation curves
+- **Generalization Assessment:** Custom CNN shows significant overfitting while transfer learning maintains better generalization
+
+### Training Efficiency and Resource Utilization
+
+**Computational Requirements:**
+- **Custom CNN:** Faster training (3-9 seconds per epoch), lower memory footprint
+- **Transfer Learning:** Slower training (10-50 seconds per epoch), higher memory requirements
+- **Parameter Efficiency:** Custom CNN achieves better performance with 23x fewer parameters
+
+## Technical Insights and Architectural Considerations
+
+### Domain Compatibility in Transfer Learning
+
+The significant performance disparity highlights the importance of domain compatibility in transfer learning. The
+ConvNeXtSmall architecture, pre-trained on high-resolution ImageNet data, may not effectively transfer to the
+low-resolution (32×32) CIFAR-10 domain due to fundamental differences in visual scale and feature granularity.
+
+### Architectural Suitability for CIFAR-10
+The custom CNN's success demonstrates that simpler architectures specifically designed for the problem domain can
+outperform complex pre-trained models when significant domain shifts exist. The progressive downsampling from 32×32
+to 8×8 feature maps aligns well with CIFAR-10's resolution constraints.
+
+## Practical Recommendations and Future Directions
+### Model Selection Guidelines
+
+**For CIFAR-10 and Similar Low-Resolution Datasets:**
+- Prefer custom CNN architectures designed for the specific resolution and domain
+- Consider simpler architectures to avoid overparameterization
+- Implement strong regularization techniques to address overfitting
+
+**For Transfer Learning Applications:**
+- Ensure domain compatibility between pre-training and target datasets
+- Consider fine-tuning strategies for better adaptation
+- Evaluate the cost-benefit ratio of computational requirements vs performance gains
+
+### Optimization Strategies
+
+**Addressing Custom CNN Overfitting:**
+- Implement data augmentation techniques
+- Add dropout layers and stronger regularization
+- Reduce model capacity while maintaining performance
+- Employ learning rate scheduling and early stopping
+
+**Improving Transfer Learning Performance:**
+- Implement progressive unfreezing of base model layers
+- Use adaptive learning rates for different architectural components
+- Consider alternative pre-trained models better suited to the target domain
+
+This comparative analysis underscores that while transfer learning represents a powerful paradigm in deep learning, its effectiveness is highly dependent on domain compatibility and problem-specific considerations. For CIFAR-10 classification, custom-designed CNN architectures provide superior performance with significantly reduced computational requirements.
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut3/09-cnn-transfer-learning-assignment/
+- **Colab Link:** https://colab.research.google.com/drive/1ZxNAeZaOpPLlUAanFTS4y0QuOnT7lKUh?usp=sharing

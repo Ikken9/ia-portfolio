@@ -1,8 +1,4 @@
-import nextra from "nextra";
-
-const withNextra = nextra({
-    staticImage: true,
-});
+/** @type {import('next').NextConfig} */
 
 // Use GitHub Actions environment or NODE_ENV
 const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
@@ -16,6 +12,7 @@ const nextConfig = {
     assetPrefix: isProd ? `/${repoName}/` : '/',
     output: "export",
     trailingSlash: true,
+    transpilePackages: ['next-mdx-remote'],
     images: {
         unoptimized: true
     },
@@ -39,4 +36,4 @@ const nextConfig = {
     }
 };
 
-export default withNextra(nextConfig);
+export default nextConfig;

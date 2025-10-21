@@ -2,7 +2,11 @@
 title: "Exploratory Data Analysis: Titanic Dataset Investigation"
 description: "Comprehensive data exploration and pattern identification in survival data"
 tags: ["EDA", "Pandas", "Seaborn", "Matplotlib"]
+idx: 0
+author: "Piero Saucedo"
 ---
+
+import MDXImage from "src/components/MDXImage";
 
 Exploratory Data Analysis forms the foundation of any successful machine learning project. This analysis systematically
 examines the Titanic dataset to identify key patterns, relationships, and data quality issues that impact survival
@@ -18,7 +22,7 @@ prediction.
 ## Key Findings from Visual Analysis
 Data visualization reveals clear survival patterns across passenger demographics:
 
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_01_1.png`} alt="survival analysis visualizations" />
+<MDXImage src="/u1_01_1.png" alt="survival analysis visualizations" />
 
 ## Critical Survival Factors Identified
 **Primary Influencing Factors:**

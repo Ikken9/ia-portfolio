@@ -2,7 +2,11 @@
 title: "Perceptron Fundamentals and MLP Architecture"
 description: "From single neurons to multi-layer networks: Understanding linear separability and the XOR problem"
 tags: ["Perceptron", "MLP", "XOR Problem", "Neural Networks", "Linear Separability"]
+idx: 7
+author: "Piero Saucedo"
 ---
+
+import MDXImage from "src/components/MDXImage";
 
 Understanding the limitations of single neurons and the power of multi-layer networks forms the cornerstone of modern
 deep learning. This exploration demonstrates why certain problems require more complex architectures through visual
@@ -11,9 +15,9 @@ experimentation with basic logic gates.
 ## Perceptron Implementation and Logic Gates
 The fundamental perceptron function implements a simple binary classifier:
 
-```python
+```
 def perceptron(x1, x2, w1, w2, bias):
-    return 1 if (w1*x1 + w2*x2 + bias) &ge; 0 else 0
+    return 1 if (w1*x1 + w2*x2 + bias) >= 0 else 0
 ```
 
 ### AND Gate Implementation
@@ -31,7 +35,7 @@ def perceptron(x1, x2, w1, w2, bias):
 
 The AND gate demonstrates linear separability with a single decision boundary that successfully classifies all inputs.
 
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_1.png`} alt="and" />
+<MDXImage src="/u2_01_1.png" alt="and" />
 
 ### OR Gate Implementation
 
@@ -48,7 +52,7 @@ The AND gate demonstrates linear separability with a single decision boundary th
 
 The OR gate also proves linearly separable with an appropriate bias adjustment.
 
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_2.png`} alt="or" />
+<MDXImage src="/u2_01_2.png" alt="or" />
 
 ### NOT Gate Implementation
 
@@ -63,7 +67,7 @@ The OR gate also proves linearly separable with an appropriate bias adjustment.
 
 The single-input NOT gate operates with a threshold mechanism in one dimension.
 
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_3.png`} alt="not" />
+<MDXImage src="/u2_01_3.png" alt="not" />
 
 ## The Fundamental Limitation: XOR Problem
 
@@ -94,14 +98,14 @@ The single-input NOT gate operates with a threshold mechanism in one dimension.
 The XOR problem demonstrates the critical limitation of single-layer perceptrons: they cannot solve non-linearly
 separable problems. All attempted linear boundaries failed to correctly classify all four XOR patterns.
 
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_4.png`} alt="xor" />
+<MDXImage src="/u2_01_4.png" alt="xor" />
 
 **Key Insight:** No straight line can separate the XOR classes (red circles at (0,0) and (1,1) from blue squares at (0,1) and (1,0)).
 
 ## Multi-Layer Perceptron Solution
 
 ### MLP Architecture for XOR
-```python
+```
 mlp_xor = MLPClassifier(
     hidden_layer_sizes=(4,),    # 4 neurons in hidden layer
     activation='tanh',          # Non-linear activation
@@ -138,7 +142,7 @@ mlp_xor = MLPClassifier(
 - Perfect XOR classification achieved
 - Convergence achieved despite initial warnings
 
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u2_01_5.png`} alt="xor" />
+<MDXImage src="/u2_01_5.png" alt="results xor" />
 
 ## Decision Boundary Comparison
 

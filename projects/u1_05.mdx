@@ -2,7 +2,11 @@
 title: "Customer Segmentation with Clustering and PCA"
 description: "Unsupervised learning techniques for customer behavior analysis and market segmentation"
 tags: ["Clustering", "PCA", "OneHotEncoder", "Data Normalization"]
+idx: 6
+author: "Piero Saucedo"
 ---
+
+import MDXImage from "src/components/MDXImage";
 
 Customer segmentation represents a fundamental application of unsupervised learning in business analytics. This
 implementation demonstrates a complete pipeline from data exploration to customer clustering using K-Means and PCA on
@@ -29,13 +33,13 @@ into shopping patterns and customer characteristics.
 ## Exploratory Data Analysis
 
 **Variable Distributions:**
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_05_1.png`} alt="feature distributions" />
+<MDXImage src="/u1_05_1.png" alt="feature distributions" />
 
 **Feature Relationships:**
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_05_2.png`} alt="variable relationships" />
+<MDXImage src="/u1_05_2.png" alt="variable relationships" />
 
 **Correlation Analysis:**
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_05_3.png`} alt="correlation matrix" />
+<MDXImage src="/u1_05_3.png" alt="correlation matrix" />
 
 The correlation matrix reveals minimal linear relationships between features, with the strongest correlation (0.010)
 between Annual Income and Spending Score.
@@ -43,10 +47,10 @@ between Annual Income and Spending Score.
 ## Data Preprocessing and Scaling
 
 **Scaling Comparison:**
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_05_4.png`} alt="scalers comparison" />
+<MDXImage src="/u1_05_4.png" alt="scalers comparison" />
 
 **Scaler Effects on Annual Income:**
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_05_5.png`} alt="scalers effect on annual income" />
+<MDXImage src="/u1_05_5.png" alt="scalers effect on annual income" />
 
 Three scalers evaluated for data normalization:
 - MinMaxScaler: Silhouette Score = 0.364
@@ -58,17 +62,17 @@ MinMaxScaler demonstrated superior performance and was selected for final implem
 ## Dimensionality Reduction with PCA
 
 **Variance Explained:**
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_05_6.png`} alt="PCA variance explanation" />
+<MDXImage src="/u1_05_6.png" alt="PCA variance explanation" />
 
 **2D Projection:**
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_05_7.png`} alt="PCA 2D visualization" />
+<MDXImage src="/u1_05_7.png" alt="PCA 2D visualization" />
 
 PCA applied to reduce data to 2 dimensions for visualization and improved clustering performance.
 
 ## Feature Selection Comparison
 
 **Methods Comparison:**
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_05_8.png`} alt="feature selection methods comparison" />
+<MDXImage src="/u1_05_8.png" alt="feature selection methods comparison" />
 
 Four approaches evaluated for clustering preparation:
 - **Baseline (all features):** Silhouette Score = 0.364
@@ -81,7 +85,7 @@ PCA achieved the highest performance and was selected for final clustering.
 ## Optimal Cluster Determination
 
 **Elbow Method & Silhouette Analysis:**
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_05_9.png`} alt="cluster optimization" />
+<MDXImage src="/u1_05_9.png" alt="cluster optimization" />
 
 - Elbow Method suggested K=6
 - Silhouette Analysis suggested K=2 (score=0.762)
@@ -90,7 +94,7 @@ PCA achieved the highest performance and was selected for final clustering.
 ## Customer Segmentation Results
 
 **Final Clustering:**
-<img src={`/${process.env.GITHUB_REPOSITORY.split('/')[1] + '' || ''}/u1_05_10.png`} alt="customer clusters" />
+<MDXImage src="/u1_05_10.png" alt="customer clusters" />
 
 **Cluster Profiles:**
 
