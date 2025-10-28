@@ -1,0 +1,153 @@
+---
+title: "A World Away: Exoplanet Detection with Machine Learning"
+description: "Integration of Kepler and TESS datasets with XGBoost-based classification for exoplanet detection — NASA Space Apps Challenge 2025"
+tags: ["Exoplanets", "XGBoost", "Machine Learning", "Kepler", "TESS", "Astrophysics", "Classification"]
+idx: 11
+author: "Piero Saucedo"
+---
+
+The **NASA Space Apps Challenge 2025** project *“A World Away: Hunting for Exoplanets with AI”* explores the potential of
+machine learning for the automatic detection and classification of exoplanet candidates.
+By leveraging astrophysical data from NASA’s **Kepler** and **TESS** missions, this work demonstrates how data-driven
+approaches can enhance the identification and prioritization of celestial objects of interest.
+
+## Experimental Framework
+
+Two official NASA catalogs were used as the foundation for this experiment:
+
+- **KOI (Kepler Objects of Interest)** — long-term, high-precision observations from the Kepler Space Telescope (2009–2018)
+- **TOI (TESS Objects of Interest)** — wide-field survey data from the Transiting Exoplanet Survey Satellite (2018–present)
+
+Both datasets were unified into a single, standardized structure with common astrophysical parameters:
+
+- `planet_radius` – Estimated planetary radius (Earth radii)
+- `transit_depth` – Fractional decrease in brightness during transit
+- `transit_duration` – Duration of planetary transit (hours)
+- `orbital_period` – Time for one full orbit (days)
+- `stellar_temp` – Host star’s surface temperature (Kelvin)
+- `stellar_radius` – Host star’s radius (solar radii)
+- `stellar_logg` – Logarithmic surface gravity of the star
+- `snr` – Signal-to-noise ratio of the transit model
+- `total_fp_flags` – Total count of false-positive indicators (Kepler only)
+
+A multi-class target variable `planet_status` was created with three categories:
+- `0` = False Positive
+- `1` = Candidate
+- `2` = Confirmed Exoplanet
+
+## Data Preprocessing and Unification
+
+The unification process involved:
+
+- **Schema harmonization:** aligning differing column names and units between KOI and TOI catalogs
+- **Missing value imputation:** replacing `NaN` entries with median values per feature to preserve distribution consistency
+- **Normalization:** standardizing feature scales using `StandardScaler` within a machine learning pipeline
+- **Class balancing:** applying **SMOTE (Synthetic Minority Over-sampling Technique)** to address the natural imbalance
+  between confirmed planets, candidates, and false positives
+
+This preprocessing ensured that both missions contributed equitably to the model’s learning process.
+
+## Model Architecture and Training Pipeline
+
+The classification system was built around an **XGBoost** model integrated into a scikit-learn pipeline:
+
+**Pipeline Components:**
+1. **Imputation and Scaling** – median imputation and feature normalization
+2. **SMOTE Balancing** – synthetic oversampling of minority classes
+3. **XGBoost Classifier** – configured for multiclass classification (`objective="multi:softprob"`)
+
+**Hyperparameters:**
+- `n_estimators`: 300
+- `max_depth`: 5
+- `learning_rate`: 0.10
+- `eval_metric`: `mlogloss`
+- `num_class`: 3
+
+**Rationale:**
+XGBoost was selected over simpler models (e.g., Logistic Regression, Random Forest) due to its superior handling of tabular
+data, intrinsic regularization, and ability to capture complex nonlinear relationships between astrophysical variables.
+
+## Evaluation Metrics and Model Validation
+
+To evaluate model performance, the dataset was split using stratified sampling (75/25), ensuring consistent class
+distribution across training and testing subsets.
+Given the class imbalance, **F1-score (macro)** and **ROC-AUC (One-vs-Rest)** were selected as the primary metrics:
+
+**F1-Score (Macro):**
+Balances precision and recall across all classes equally, ensuring the model performs well not only on dominant classes.
+Result: **0.8017**
+
+**ROC-AUC (OvR):**
+Measures the model’s discriminative capability in probabilistic outputs for each class.
+Result: **0.9315**
+
+**Confusion Matrix Analysis:**
+The confusion matrix provided a detailed view of misclassifications. The model achieved high accuracy distinguishing
+false positives and confirmed exoplanets, with most confusion arising between `Candidate` and `Confirmed` — a reflection
+of their inherent physical similarity in observed features such as transit depth and stellar temperature.
+
+These combined metrics validate both the **scientific consistency** and **robustness** of the classification pipeline.
+
+## Web Interface and System Architecture
+
+An interactive web interface was developed using **Streamlit**, allowing users to:
+
+- Upload CSV datasets from new observational campaigns
+- Run predictions in real-time using the trained pipeline (`exoplanet_pipeline.pkl`)
+- Visualize classification probabilities and confusion matrices
+- Explore feature relationships through dynamic 2D/3D visualizations
+
+**Backend Architecture Overview:**
+- **Frontend:** Streamlit (Python)
+- **Model Service:** XGBoost pipeline with preprocessing and balancing steps
+- **Visualization:** Plotly for interactive charts and feature importance analysis
+- **Data Management:** Pandas and NumPy for tabular operations
+- **Version Control:** GitHub for collaborative development and experiment tracking
+
+This architecture ensures modularity, reproducibility, and smooth integration of future models or datasets.
+
+## Performance Results
+
+| Metric | Description | Value |
+|--------|--------------|------:|
+| F1-Score (Macro) | Balanced class-wise harmonic mean | **0.8017** |
+| ROC-AUC (One-vs-Rest) | Probabilistic discrimination power | **0.9315** |
+| Balanced Accuracy | Mean recall across classes | **0.78** |
+| Test Split | Independent 25% subset | — |
+| Classes | False Positive / Candidate / Confirmed | — |
+
+The confusion matrix confirmed expected astrophysical overlap between candidate and confirmed categories, but overall
+classification reliability was high across all groups.
+
+## Interpretability and Feature Importance
+
+Feature importance analysis revealed the dominant role of:
+- **Transit Depth** and **Planet Radius** — key discriminators of exoplanet likelihood
+- **Signal-to-Noise Ratio (SNR)** — crucial for distinguishing valid detections
+- **Stellar Parameters** — especially `stellar_temp` and `stellar_radius`, influencing transit visibility
+
+These relationships align with established astrophysical principles, validating the model’s physical interpretability.
+
+## Limitations and Challenges
+
+Despite solid quantitative performance, several challenges persisted:
+- Residual **class imbalance** introduced variability in minority class precision
+- Physical overlap between **candidates** and **confirmed planets** limited boundary separability
+- Data inconsistencies between **Kepler** and **TESS** catalogs required extensive normalization
+- Model interpretability, while improved, still requires domain expert validation for scientific deployment
+
+## Conclusions and Future Directions
+
+This project demonstrates the feasibility of automating exoplanet classification using supervised learning pipelines.
+The combination of **data unification, preprocessing, and gradient boosting** yielded a scientifically meaningful and
+computationally efficient model.
+
+**Future improvements include:**
+- Expanding datasets to include JWST and Gaia missions
+- Implementing Bayesian hyperparameter optimization
+- Adding uncertainty estimation and explainability modules (e.g., SHAP, LIME)
+- Deploying the system as a public **API service** for researchers
+- Integrating educational visualizations for outreach and citizen science
+
+Through this work, we establish a reproducible and interpretable machine learning framework that supports the discovery of
+new worlds — advancing both scientific inquiry and accessibility in exoplanet research.
