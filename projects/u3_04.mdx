@@ -1,0 +1,149 @@
+Aquí tienes el análisis en formato MDX basado en el proyecto de Segmentación de Inundaciones con SAM:
+
+---
+title: "Flood Area Segmentation with Segment Anything Model (SAM)"
+description: "Fine-tuning and evaluation of Meta's Segment Anything Model for flood water segmentation using point and box prompts"
+tags: ["Computer Vision", "Image Segmentation", "SAM", "Transfer Learning", "Flood Detection"]
+idx: 14
+author: "Piero Saucedo"
+---
+
+Segmenting flood areas from satellite imagery is critical for disaster response and monitoring. This project explores the adaptation of Meta's Segment Anything Model (SAM) - a foundation model for image segmentation - to the specialized task of flood water detection through prompt-based fine-tuning.
+
+## Dataset and Experimental Setup
+
+The Flood Area Segmentation dataset from Kaggle was utilized, containing 290 image-mask pairs of flood-affected regions. The dataset exhibited significant variability with 81 different image sizes, presenting challenges for consistent model processing.
+
+**Data Characteristics:**
+- **Image Resolution:** Variable sizes with average dimensions around 551×893 pixels
+- **Class Distribution:** 42.8% water pixels vs. 57.2% background
+- **Dataset Split:** 80% training (80 images), 20% validation (20 images)
+- **Preprocessing:** Fixed resizing to 1024×1024 (SAM's native resolution) with nearest-neighbor interpolation for masks
+
+## SAM Architecture and Fine-tuning Strategy
+
+The project employed SAM's ViT-B backbone (93.7M parameters) with a targeted fine-tuning approach:
+
+**Model Components:**
+- **Frozen Components:** Image encoder (87.7M params) and prompt encoder
+- **Trainable Components:** Mask decoder only (4.06M params, 4.33% of total)
+- **Optimization:** Adam optimizer with learning rate 1e-4 and StepLR scheduler
+
+**Training Configuration:**
+- **Loss Function:** Combined BCE + Dice loss (equal weighting)
+- **Batch Size:** 2 (limited by memory constraints)
+- **Epochs:** 10 with early stopping based on validation IoU
+- **Augmentations:** Horizontal/Vertical flips, rotation, brightness/contrast adjustments
+
+## Prompt Engineering Strategies
+
+Two distinct prompt modalities were evaluated for guiding SAM's segmentation:
+
+**Point Prompts:**
+- Single foreground point sampled from water region center
+- Handles ambiguous boundaries but requires precise point selection
+- Faster inference but potentially less accurate for complex shapes
+
+**Box Prompts:**
+- Bounding boxes derived from ground truth mask extents
+- Provides stronger spatial constraints for segmentation
+- More consistent performance across varied flood patterns
+
+## Baseline Performance Analysis
+
+The pretrained SAM model demonstrated strong zero-shot capabilities:
+
+**Point Prompt Performance:**
+- **Mean IoU:** 52.91% ± 32.14%
+- **Dice Coefficient:** 62.20% ± 33.77%
+- **Precision:** 81.93%, **Recall:** 58.85%
+
+**Box Prompt Performance:**
+- **Mean IoU:** 72.30% ± 20.88%
+- **Dice Coefficient:** 81.56% ± 19.85%
+- **Precision:** 84.76%, **Recall:** 81.06%
+
+**Key Observation:** Box prompts significantly outperformed point prompts in baseline evaluation, providing 36.6% higher IoU and 37.9% higher recall, demonstrating the importance of spatial context for flood segmentation.
+
+## Fine-tuning Results and Improvements
+
+After targeted fine-tuning on the flood segmentation dataset, substantial improvements were achieved:
+
+**Fine-tuned Model Performance:**
+- **Mean IoU:** 74.87% ± 18.28% (41.5% improvement)
+- **Dice Coefficient:** 84.08% ± 14.95% (35.2% improvement)
+- **Precision:** 89.97% (9.8% improvement)
+- **Recall:** 79.65% (35.3% improvement)
+
+**Training Dynamics:**
+- Consistent improvement in both training and validation IoU across epochs
+- Final training IoU: 65.4%, Validation IoU: 74.9%
+- Effective regularization preventing overfitting despite small dataset
+
+## Comparative Analysis
+
+| Metric | Pretrained | Fine-tuned | Improvement |
+|--------|------------|------------|-------------|
+| IoU | 52.91% | 74.87% | +41.5% |
+| Dice | 62.20% | 84.08% | +35.2% |
+| Precision | 81.93% | 89.97% | +9.8% |
+| Recall | 58.85% | 79.65% | +35.3% |
+
+The fine-tuned model achieved superior performance across all metrics, with particularly notable gains in recall and IoU, indicating better capture of true flood areas.
+
+## Visual Results and Qualitative Assessment
+
+Visual comparisons revealed several key improvements:
+
+**Edge Refinement:** Fine-tuned model produced cleaner boundaries around flood regions with reduced fragmentation.
+
+**Small Object Detection:** Enhanced capability to identify smaller isolated water bodies that the pretrained model missed.
+
+**Shadow Handling:** Improved discrimination between water shadows and actual flood areas.
+
+**Consistency:** More reliable segmentation across varying image conditions and water patterns.
+
+## Technical Challenges and Solutions
+
+**Variable Image Sizes:** Implemented dynamic resizing to SAM's native 1024×1024 resolution while preserving aspect ratio information.
+
+**Class Imbalance:** Addressed through combined BCE+Dice loss focusing on both pixel-wise accuracy and region overlap.
+
+**Limited Data:** Leveraged SAM's pretrained knowledge through partial fine-tuning, requiring only 4.33% parameter updates.
+
+**Prompt Consistency:** Developed robust prompt generation ensuring valid points/boxes even for challenging cases.
+
+## Error Analysis and Limitations
+
+**Remaining Challenges:**
+- **Boundary Precision:** Some edge inaccuracies persist in complex shoreline regions
+- **Occlusion Handling:** Difficulty with partially obscured water areas
+- **Scale Sensitivity:** Performance variation across different flood extents
+- **Computational Requirements:** SAM's memory footprint limits batch sizes and inference speed
+
+**Failure Modes:**
+- Misclassification of dark non-water regions as floods
+- Under-segmentation of narrow water channels
+- Over-segmentation in textured water surfaces
+
+## Conclusions and Future Directions
+
+**Key Findings:**
+1. SAM demonstrates remarkable zero-shot capability for flood segmentation, particularly with box prompts
+2. Targeted fine-tuning of only the mask decoder provides substantial performance gains
+3. Prompt engineering is crucial for leveraging SAM's capabilities in specialized domains
+4. The model effectively transfers knowledge from general segmentation to flood-specific tasks
+
+**Recommended Enhancements:**
+- **Multi-modal Prompts:** Combine points, boxes, and text descriptions for richer context
+- **Scale Adaptation:** Implement multi-scale processing for varied flood extents
+- **Temporal Analysis:** Extend to video sequences for flood progression monitoring
+- **Efficient Variants:** Explore mobileSAM or efficientSAM for deployment scenarios
+- **Uncertainty Quantification:** Add confidence estimates for reliable operational use
+
+This project demonstrates the practical application of foundation models for environmental monitoring tasks, showing that with careful prompt design and targeted fine-tuning, general-purpose segmentation models can be effectively adapted to specialized domains like flood detection.
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut3/12-sam-segmentation-assignment/
+- **Dataset Source:** https://www.kaggle.com/datasets/faizalkarin/flood-area-segmentation
+- **SAM Paper:** https://arxiv.org/abs/2304.02643
+- **Colab Implementation:** https://colab.research.google.com/drive/1a4o526uxW7Mn2tke3CKWJIhYXmsXQ9N0?usp=sharing

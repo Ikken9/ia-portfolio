@@ -309,7 +309,7 @@ export default async function ProjectsPage({ params }) {
                             <div className="space-y-3">
                                 {files
                                     .filter(f => f.category === category)
-                                    .sort((a, b) => a.idx > b.idx)
+                                    .sort((a, b) => b.idx - a.idx)
                                     .map(file => (
                                         <Link
                                             key={file.path}

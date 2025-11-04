@@ -144,10 +144,10 @@ const ModernMLPortfolio = () => {
                     </div>
 
                     <div className="text-center mt-12">
-                        <a href="/projects" className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800/50 border border-slate-700 rounded-xl hover:bg-slate-800 transition-all group">
+                        <Link href="/projects" className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800/50 border border-slate-700 rounded-xl hover:bg-slate-800 transition-all group">
                             View All Projects
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </section>
