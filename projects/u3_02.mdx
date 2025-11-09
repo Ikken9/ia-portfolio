@@ -1,0 +1,140 @@
+---
+title: "Advanced Flower Classification with Transfer Learning and Model Interpretation"
+description: "Comprehensive analysis of flower classification using EfficientNet, data augmentation, and explainable AI techniques"
+tags: ["Computer Vision", "Transfer Learning", "Explainable AI", "Data Augmentation", "Flower Classification"]
+idx: 13
+author: "Piero Saucedo"
+---
+
+import MDXImage from "src/components/MDXImage";
+
+Flower classification presents unique challenges in computer vision due to the fine-grained distinctions between species
+and the high visual similarity among different classes. This project implements a complete deep learning pipeline for
+the Oxford Flowers102 dataset, combining transfer learning with advanced data augmentation and model interpretation
+techniques to achieve robust flower classification.
+
+## Dataset and Experimental Setup
+The Oxford Flowers102 dataset comprises 6,149 images across 102 flower categories, with significant inter-class
+similarity and intra-class variation. The dataset was preprocessed with fixed resizing to 224×224 pixels to accommodate
+the EfficientNet architecture, with careful handling of the original aspect ratios.
+
+**Data Characteristics:**
+- **Training Samples:** 1,020 images (expanded via augmentation)
+- **Test Samples:** 6,149 images for evaluation
+- **Class Distribution:** Balanced across 102 flower species
+- **Image Variability:** Significant differences in scale, orientation, and background
+
+## Data Pipeline Development
+Two distinct data pipelines were implemented to evaluate the impact of augmentation strategies:
+
+**Baseline Pipeline:** Simple preprocessing with EfficientNet normalization, serving as the control condition for
+measuring augmentation effectiveness.
+**Augmented Pipeline:** Comprehensive data augmentation including geometric transformations (random flips, rotation up
+to 45 degrees, zoom, translation) and photometric adjustments (brightness, contrast variation). The augmentation layer
+was strategically placed before normalization to ensure proper application on the original pixel range.
+
+The visualization of augmentation effects demonstrated the pipeline's ability to generate diverse training examples
+while preserving floral characteristics, crucial for teaching the model invariance to common photographic variations.
+
+## Model Architecture and Transfer Learning
+The classification model leveraged EfficientNetB0 as the feature extraction backbone, chosen for its optimal balance
+between computational efficiency and representational power. The architecture employed a strategic fine-tuning approach:
+
+**Base Model Configuration:** Pre-trained on ImageNet weights with the top classification layer removed, preserving the
+rich feature representations learned from diverse natural images.
+
+**Custom Classification Head:** Global average pooling followed by a dense layer with softmax activation for the 102-way
+classification task.
+
+The model contained approximately 4.18 million parameters, with the majority residing in the pre-trained backbone. This
+design allowed efficient transfer learning while maintaining the capacity to learn flower-specific features.
+
+## Training Strategy and Performance
+The model was trained for 10 epochs using Adam optimization with sparse categorical cross-entropy loss, monitoring both
+training and validation accuracy. The training dynamics revealed interesting patterns:
+
+**Rapid Feature Adaptation:** Significant accuracy improvement in early epochs (18% to 79% training accuracy in epoch 2)
+demonstrated effective knowledge transfer from the pre-trained weights.
+
+**Progressive Refinement:** Subsequent epochs showed more gradual improvements as the model fine-tuned its
+representations for the specific floral domain.
+
+**Final Performance:** The model achieved 75.50% test accuracy with a loss of 0.978, indicating strong generalization
+capability despite the challenging 102-class classification task. The training curves showed healthy convergence with
+minimal overfitting, validating the augmentation strategy.
+
+## Model Interpretation with Explainable AI
+To build trust and understanding in the model's decision-making process, two complementary interpretation techniques
+were implemented:
+
+**GradCAM Analysis:** This technique identified that the model consistently focused on floral reproductive structures
+(stamens, pistils) and distinctive petal patterns when making correct classifications. The visualization revealed that
+successful predictions correlated with the model attending to botanically relevant regions rather than background
+elements.
+
+Here is one of the predictions using GradCAM:
+<MDXImage src="/u3_02_1.png" alt="gradcam flower prediction" />
+
+Also, the use of **Integrated Gradients:** provided a more granular view of feature importance, highlighting subtle petal textures,
+color gradients, and structural boundaries that contributed to the classification decision. The method demonstrated how
+the model integrated information across the entire flower structure rather than relying on single distinctive features.
+
+<MDXImage src="/u3_02_2.png" alt="integrated gradients" />
+
+The interpretation analyses confirmed that the model learned botanically meaningful features, with correct predictions
+strongly associated with attention to floral morphology rather than spurious correlations.
+
+## Technical Challenges and Solutions
+**Class Similarity:** Many flower species share visual characteristics, requiring the model to learn subtle
+discriminative features. The data augmentation strategy helped the model learn invariant representations.
+
+**Scale Variation:** Flowers appeared at different scales in images. The combination of random zoom and the global
+average pooling architecture provided scale invariance.
+
+**Limited Training Data:** With only 1,020 training examples for 102 classes, the augmentation pipeline was crucial
+for preventing overfitting and improving generalization.
+
+**Interpretation Complexity:** The nested architecture of transfer learning models required custom implementation of
+interpretation methods that could handle the sequential model structure.
+
+## Error Analysis and Limitations
+Analysis of misclassifications revealed consistent patterns:
+
+**Inter-genus Confusion:** The model most frequently confused species within the same botanical genus, particularly in
+cases where visual differences are subtle even to human experts.
+
+**Background Sensitivity:** Some errors occurred when distinctive background elements (leaves, soil types) correlated
+strongly with certain flower classes, indicating potential dataset bias.
+
+**Occlusion Challenges:** Images with partially obscured flowers or unusual viewpoints presented difficulties,
+suggesting opportunities for improved augmentation strategies.
+
+The primary limitation remained the dataset size relative to the number of classes, with approximately 10 examples per
+class in the training set, presenting fundamental challenges for learning highly discriminative features.
+
+## Conclusions and Future Directions
+This project demonstrates the effectiveness of transfer learning combined with strategic data augmentation for
+fine-grained visual classification. The achieved 75.5% accuracy on a 102-way classification task with limited training
+data underscores the power of pre-trained representations and appropriate regularization.
+
+**Key Insights:**
+- EfficientNet provides an excellent balance of efficiency and performance for flower classification
+- Comprehensive data augmentation is essential for generalization with limited training data
+- Model interpretation techniques validate that the model learns botanically relevant features
+- The combination of geometric and photometric transformations creates robust invariances
+
+**Recommended Enhancements:**
+- **Progressive Fine-tuning:** Unfreezing later layers of the base model after initial convergence
+- **Advanced Augmentations:** MixUp, CutMix, or style transfer techniques for increased diversity
+- **Attention Mechanisms:** Incorporating self-attention layers to better model long-range dependencies in floral structures
+- **Multi-scale Processing:** Processing images at multiple resolutions to capture both fine details and global structure
+- **Ensemble Methods:** Combining predictions from multiple architectures or training runs
+
+The integration of explainable AI techniques provides not only validation of model behavior but also potential insights
+for botanical research, bridging the gap between computer vision and plant science.
+
+- **Dataset Source:** https://www.tensorflow.org/datasets/catalog/oxford_flowers102
+- **EfficientNet Paper:** https://arxiv.org/abs/1905.11946
+- **GradCAM Paper:** https://arxiv.org/abs/1610.02391
+- **Colab Implementation:** https://colab.research.google.com/drive/1927eVf2mqhUiWjWmc_hFrmXubEJMcTok?usp=sharing
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut3/10-data-augmentation-xai-assignment/

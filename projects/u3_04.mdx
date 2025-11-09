@@ -2,15 +2,18 @@
 title: "Flood Area Segmentation with Segment Anything Model (SAM)"
 description: "Fine-tuning and evaluation of Meta's Segment Anything Model for flood water segmentation using point and box prompts"
 tags: ["Computer Vision", "Image Segmentation", "SAM", "Transfer Learning", "Flood Detection"]
-idx: 14
+idx: 15
 author: "Piero Saucedo"
 ---
 
-Segmenting flood areas from satellite imagery is critical for disaster response and monitoring. This project explores the adaptation of Meta's Segment Anything Model (SAM) - a foundation model for image segmentation - to the specialized task of flood water detection through prompt-based fine-tuning.
+Segmenting flood areas from satellite imagery is critical for disaster response and monitoring. This project explores
+the adaptation of Meta's Segment Anything Model (SAM) - a foundation model for image segmentation - to the specialized
+task of flood water detection through prompt-based fine-tuning.
 
 ## Dataset and Experimental Setup
 
-The Flood Area Segmentation dataset from Kaggle was utilized, containing 290 image-mask pairs of flood-affected regions. The dataset exhibited significant variability with 81 different image sizes, presenting challenges for consistent model processing.
+The Flood Area Segmentation dataset from Kaggle was utilized, containing 290 image-mask pairs of flood-affected regions.
+The dataset exhibited significant variability with 81 different image sizes, presenting challenges for consistent model processing.
 
 **Data Characteristics:**
 - **Image Resolution:** Variable sizes with average dimensions around 551×893 pixels
@@ -61,7 +64,8 @@ The pretrained SAM model demonstrated strong zero-shot capabilities:
 - **Dice Coefficient:** 81.56% ± 19.85%
 - **Precision:** 84.76%, **Recall:** 81.06%
 
-**Key Observation:** Box prompts significantly outperformed point prompts in baseline evaluation, providing 36.6% higher IoU and 37.9% higher recall, demonstrating the importance of spatial context for flood segmentation.
+**Key Observation:** Box prompts significantly outperformed point prompts in baseline evaluation, providing 36.6% higher
+IoU and 37.9% higher recall, demonstrating the importance of spatial context for flood segmentation.
 
 ## Fine-tuning Results and Improvements
 
@@ -124,22 +128,16 @@ Visual comparisons revealed several key improvements:
 - Under-segmentation of narrow water channels
 - Over-segmentation in textured water surfaces
 
-## Conclusions and Future Directions
-
+## Conclusions
 **Key Findings:**
 1. SAM demonstrates remarkable zero-shot capability for flood segmentation, particularly with box prompts
 2. Targeted fine-tuning of only the mask decoder provides substantial performance gains
 3. Prompt engineering is crucial for leveraging SAM's capabilities in specialized domains
 4. The model effectively transfers knowledge from general segmentation to flood-specific tasks
 
-**Recommended Enhancements:**
-- **Multi-modal Prompts:** Combine points, boxes, and text descriptions for richer context
-- **Scale Adaptation:** Implement multi-scale processing for varied flood extents
-- **Temporal Analysis:** Extend to video sequences for flood progression monitoring
-- **Efficient Variants:** Explore mobileSAM or efficientSAM for deployment scenarios
-- **Uncertainty Quantification:** Add confidence estimates for reliable operational use
-
-This project demonstrates the practical application of foundation models for environmental monitoring tasks, showing that with careful prompt design and targeted fine-tuning, general-purpose segmentation models can be effectively adapted to specialized domains like flood detection.
+This project demonstrates the practical application of foundation models for environmental monitoring tasks, showing
+that with careful prompt design and targeted fine-tuning, general-purpose segmentation models can be effectively adapted
+to specialized domains like flood detection.
 
 - **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut3/12-sam-segmentation-assignment/
 - **Dataset Source:** https://www.kaggle.com/datasets/faizalkarin/flood-area-segmentation
