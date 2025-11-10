@@ -7,7 +7,6 @@ import Link from "next/link";
 
 const ModernMLPortfolio = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const [activeProject, setActiveProject] = useState(null);
 
     useEffect(() => {
         setIsVisible(true);
@@ -15,22 +14,25 @@ const ModernMLPortfolio = () => {
 
     const projects = [
         {
-            title: "Titanic EDA",
-            description: "Comprehensive exploratory data analysis investigating survival factors of Titanic passengers with advanced statistical techniques.",
-            tags: ["EDA", "Seaborn", "NumPy", "Matplotlib", "Pandas"],
+            title: "A World Away: Exoplanet Detection with Machine Learning",
+            description: "Integration of Kepler and TESS datasets with XGBoost-based classification for exoplanet detection — NASA Space Apps Challenge 2025.",
+            tags: ["Exoplanets", "XGBoost", "Machine Learning", "Kepler", "TESS", "Astrophysics", "Classification"],
             gradient: "from-cyan-500 to-blue-600",
+            link: "/projects/nasa_sac",
         },
         {
-            title: "Feature Engineering",
-            description: "Complete machine learning pipeline with feature engineering to predict passenger survival using logistic regression.",
-            tags: ["Logistic Regression", "Classifier", "Scikit-learn", "Pandas"],
+            title: "Customer Segmentation with Clustering and PCA",
+            description: "Unsupervised learning techniques for customer behavior analysis and market segmentation.",
+            tags: ["Clustering", "PCA", "OneHotEncoder", "Data Normalization"],
             gradient: "from-violet-500 to-purple-600",
+            link: "/projects/u1_05"
         },
         {
-            title: "Linear Regression",
-            description: "Housing price prediction model using linear regression on the Boston Housing dataset with performance optimization.",
-            tags: ["Linear Regression", "Scikit-learn", "Pandas", "Matplotlib"],
+            title: "Neural Network Architecture and Optimization Experiments",
+            description: "Comprehensive analysis of MLP architectures, optimizers, and training strategies on CIFAR-10.",
+            tags: ["ANN", "MLP", "ReLU", "Tanh", "Optimizers", "Backpropagation"],
             gradient: "from-pink-500 to-rose-600",
+            link: "/projects/u2_02"
         }
     ];
 
@@ -94,44 +96,26 @@ const ModernMLPortfolio = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {projects.map((project, index) => (
-                            <div
+                            <Link
                                 key={index}
-                                onMouseEnter={() => setActiveProject(index)}
-                                onMouseLeave={() => setActiveProject(null)}
+                                href={project.link}
                                 className="group relative bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-slate-800/50 rounded-2xl p-8 hover:border-slate-700 transition-all duration-300 overflow-hidden cursor-pointer"
                             >
                                 {/* Gradient overlay on hover */}
                                 <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
-
                                 <div className="relative z-10">
                                     <h3 className="text-2xl font-bold mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-cyan-400 group-hover:to-purple-500 transition-all">
                                         {project.title}
                                     </h3>
-
-                                    <p className="text-slate-400 mb-6 leading-relaxed">
-                                        {project.description}
-                                    </p>
-
+                                    <p className="text-slate-400 mb-6 leading-relaxed">{project.description}</p>
                                     <div className="flex flex-wrap gap-2 mb-6">
                                         {project.tags.map((tag, i) => (
                                             <span
                                                 key={i}
                                                 className="px-3 py-1 bg-slate-800/50 border border-slate-700/50 rounded-lg text-xs text-slate-300"
-                                            >
-                        {tag}
-                      </span>
+                                            >{tag}
+                                            </span>
                                         ))}
-                                    </div>
-
-                                    <div className="flex items-center gap-4 text-sm">
-                                        <button className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 transition-colors">
-                                            <Code2 className="w-4 h-4" />
-                                            View Code
-                                        </button>
-                                        <button className="flex items-center gap-2 text-slate-400 hover:text-purple-400 transition-colors">
-                                            <ExternalLink className="w-4 h-4" />
-                                            Live Demo
-                                        </button>
                                     </div>
                                     <div className="flex items-start justify-between mt-6">
                                         <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${project.gradient} flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity`}>
@@ -139,9 +123,10 @@ const ModernMLPortfolio = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
+
 
                     <div className="text-center mt-12">
                         <Link href="/projects" className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800/50 border border-slate-700 rounded-xl hover:bg-slate-800 transition-all group">

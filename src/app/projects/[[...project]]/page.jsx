@@ -250,7 +250,7 @@ async function getMDXContent(mdxPath) {
    Main Page Component
 -------------------------------- */
 export default async function ProjectsPage({ params }) {
-    const { project } = params
+    const { project } = await params;
     const pathString = project?.length ? project.join('/') : ''
 
     if (!pathString) {
