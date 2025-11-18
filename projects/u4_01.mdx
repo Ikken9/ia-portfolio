@@ -1,0 +1,113 @@
+---
+title: "Financial Sentiment Analysis with Transformers"
+description: "Fine-tuning transformer models for financial news sentiment classification using Twitter financial data"
+tags: ["NLP", "Transformers", "Sentiment Analysis", "Finance", "BERT"]
+idx: 16
+author: "Piero Saucedo"
+---
+
+Sentiment analysis in financial domains presents unique challenges due to specialized vocabulary and the high stakes
+of accurate classification. This project explores the adaptation of transformer models to classify financial news
+sentiment, comparing traditional approaches with modern fine-tuning techniques.
+
+## Dataset and Experimental Setup
+The Twitter Financial News Sentiment dataset was utilized, containing 9,543 training and 2,388 validation samples across
+three sentiment categories: Bearish (0), Bullish (1), and Neutral (2). The dataset exhibited significant class imbalance
+with Neutral sentiments dominating (61.8%), reflecting the natural distribution of financial commentary where most
+statements are factual rather than opinionated.
+
+**Data Characteristics:**
+- **Class Distribution:** Highly skewed toward neutral sentiment
+- **Text Length:** Short financial messages typical of Twitter
+- **Vocabulary:** Specialized financial terminology and stock tickers
+- **Preprocessing:** Minimal cleaning to preserve financial context
+
+## Exploratory Data Analysis
+Initial exploration revealed the inherent challenges in financial sentiment classification. The dataset's class
+imbalance mirrored real-world financial communication patterns, where most market commentary remains neutral. Text
+length analysis showed concise messages averaging 15-20 tokens, typical of financial Twitter discourse.
+
+Dimensionality reduction using UMAP on TF-IDF features demonstrated partial separability between sentiment classes,
+with bullish and bearish sentiments showing more overlap than either did with neutral. This visualization confirmed the
+intuition that extreme sentiments share more vocabulary with each other than with neutral statements.
+
+## Baseline Model Performance
+A traditional TF-IDF with Logistic Regression pipeline established the performance baseline:
+
+**Baseline Results:**
+- **Accuracy:** 77.9%
+- **Macro F1-score:** 66.2%
+- **Class-wise Performance:** Strong neutral detection (94% recall) but poor bearish recognition (36% recall)
+
+The baseline model struggled particularly with minority classes, reflecting the dataset imbalance and the limitations
+of bag-of-words approaches in capturing financial context.
+
+## Transformer Fine-tuning Approach
+The FinBERT model, pre-trained specifically on financial texts, was selected for fine-tuning. This domain-specific
+starting point provided significant advantages over generic language models.
+
+**Training Configuration:**
+- **Learning Rate:** 1e-5 with careful warmup
+- **Batch Size:** 8 (constrained by GPU memory)
+- **Training Epochs:** 5 with early stopping
+- **Evaluation Strategy:** Per-epoch validation with F1 optimization
+
+The training process showed consistent improvement across epochs, with both accuracy and F1 scores stabilizing after 3
+epochs, indicating effective convergence without overfitting.
+
+## Comparative Performance Analysis
+The transformer approach demonstrated substantial improvements over the traditional baseline:
+
+**Performance Comparison:**
+- **Accuracy Improvement:** +8.2% (77.9% → 86.1%)
+- **F1-score Improvement:** +22.0% (66.2% → 88.2%)
+- **Class-wise Balance:** Significantly better minority class recognition
+
+The fine-tuned FinBERT model showed particular strength in distinguishing between bullish and bearish sentiments,
+capturing nuanced financial language that the baseline model missed. The transformer's attention mechanisms proved
+effective in identifying key sentiment-bearing phrases within financial context.
+
+## Technical Insights and Challenges
+**Tokenization Observations:** The BPE tokenizer effectively handled financial terminology, though it occasionally
+split stock tickers and financial abbreviations in ways that might obscure meaning. The model learned to reassemble
+these fragments through contextual understanding.
+
+**Class Imbalance Handling:** Despite the skewed distribution, the transformer learned effective representations for all
+classes, likely due to its pre-training on financial corpora and the use of appropriate evaluation metrics.
+
+**Computational Constraints:** The 8GB GPU memory limitation necessitated conservative batch sizes, but this didn't
+prevent the model from achieving strong performance through effective fine-tuning.
+
+## Error Analysis and Limitations
+**Persistent Challenges:**
+- **Sarcasm and Irony:** Financial Twitter often contains sarcastic commentary that challenges literal interpretation
+- **Mixed Sentiments:** Messages containing both positive and negative elements
+- **Domain-specific Ambiguity:** Terms like "correction" or "consolidation" having different connotations in financial vs. general contexts
+
+**Failure Modes:**
+- Over-reliance on certain trigger words without considering negation
+- Difficulty with emerging financial slang and abbreviations
+- Sensitivity to message length and formatting variations
+
+## Conclusions and Practical Implications
+The successful fine-tuning of FinBERT demonstrates the power of domain-specific pre-training combined with targeted
+fine-tuning. The 22% improvement in F1-score over traditional methods underscores the transformer's ability to capture
+financial context and nuanced sentiment.
+
+**Key Success Factors:**
+- Domain-specific pre-training providing financial language understanding
+- Appropriate handling of class imbalance through macro F1 optimization
+- Conservative fine-tuning preserving pre-trained knowledge while adapting to specific task
+
+**Practical Applications:**
+- Real-time market sentiment monitoring
+- Automated financial news categorization
+- Trading signal generation from social media sentiment
+- Risk assessment through sentiment analysis
+
+The project validates that while traditional methods provide reasonable baselines, transformer-based approaches offer
+significant advantages for specialized domains like finance where context and nuance are critical.
+
+- **Dataset Source:** https://huggingface.co/datasets/zeroshot/twitter-financial-news-sentiment
+- **Model Repository:** https://huggingface.co/ProsusAI/finbert
+- **Colab Implementation:** https://colab.research.google.com/drive/1V6OrTtWTjAoJQaR7MmjFotjHm-eoIt4E?usp=sharing
