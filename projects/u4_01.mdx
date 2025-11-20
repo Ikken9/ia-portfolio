@@ -6,6 +6,8 @@ idx: 16
 author: "Piero Saucedo"
 ---
 
+import MDXImage from "src/components/MDXImage";
+
 Sentiment analysis in financial domains presents unique challenges due to specialized vocabulary and the high stakes
 of accurate classification. This project explores the adaptation of transformer models to classify financial news
 sentiment, comparing traditional approaches with modern fine-tuning techniques.
@@ -30,6 +32,9 @@ length analysis showed concise messages averaging 15-20 tokens, typical of finan
 Dimensionality reduction using UMAP on TF-IDF features demonstrated partial separability between sentiment classes,
 with bullish and bearish sentiments showing more overlap than either did with neutral. This visualization confirmed the
 intuition that extreme sentiments share more vocabulary with each other than with neutral statements.
+
+## Token Length Distribution
+<MDXImage src="/u4_01_1.png" alt="token length distribution" />
 
 ## Baseline Model Performance
 A traditional TF-IDF with Logistic Regression pipeline established the performance baseline:
@@ -99,11 +104,6 @@ financial context and nuanced sentiment.
 - Appropriate handling of class imbalance through macro F1 optimization
 - Conservative fine-tuning preserving pre-trained knowledge while adapting to specific task
 
-**Practical Applications:**
-- Real-time market sentiment monitoring
-- Automated financial news categorization
-- Trading signal generation from social media sentiment
-- Risk assessment through sentiment analysis
 
 The project validates that while traditional methods provide reasonable baselines, transformer-based approaches offer
 significant advantages for specialized domains like finance where context and nuance are critical.

@@ -1,0 +1,103 @@
+---
+title: "LLM Prompting, Structured Output, and Retrieval Experiments"
+description: "Analysis of prompting strategies, temperature effects, structured outputs, summarization pipelines, and RAG implementations using LangChain and OpenAI models"
+tags: ["LLM", "Prompting", "LangChain", "RAG", "Structured Output", "FAISS"]
+idx: 17
+author: "Piero Saucedo"
+---
+
+Large Language Models provide flexible interfaces for text generation, reasoning, and retrieval.
+This set of experiments explores prompting techniques, output structuring, summarization workflows, and
+retrieval-augmented generation (RAG) using LangChain and OpenAI models.
+
+## Experimental Framework
+All experiments were executed in a Colab notebook equipped with LangChain, FAISS, and OpenAI API integrations.
+The tasks ranged from simple completions to multi-step pipelines involving splitting, summarization, retrieval, and
+JSON-constrained output.
+
+The base model for almost all evaluations was `gpt-5-mini` with configurable temperature.
+The goal was to test how prompting strategies and LangChain abstractions affect consistency, controllability, and
+factual grounding.
+
+## Prompting and Temperature Behavior
+Initial experiments examined the effect of temperature on creative outputs.
+Two prompts—a short celebratory tweet and a summary of Transformer advantages—were evaluated at temperatures 0.0, 0.5,
+and 0.9.
+
+**Observations:**
+- Low temperature produced deterministic, compact responses.
+- Higher temperature increased lexical diversity and expressive variation.
+- Task semantics remained stable, confirming robustness of small LLMs under mild creativity shifts.
+
+A multi-sentence explanatory prompt using `ChatPromptTemplate` validated controlled behavior: models consistently
+delivered concise, domain-correct responses even with technical topics such as multi-head attention.
+
+## Few-shot vs Zero-shot Classification
+Sentiment classification was tested using:
+- A zero-shot prompt with explicit instructions.
+- A few-shot prompt with two demonstrated examples.
+
+**Key Insight:**
+Few-shot conditioning improved consistency in label formatting and reduced ambiguous outputs, especially when the
+expected response format required strict token matching.
+
+Zero-shot results were accurate but occasionally lacked prefix structure or uniform formatting, illustrating the
+importance of examples when output shape matters.
+
+## Structured Output with Pydantic
+The notebook evaluated LangChain's `with_structured_output`, enforcing JSON-compatible responses using a Pydantic schema.
+
+Tests included:
+- Risk extraction for *prompt injection* (title + bullet list).
+- Translation tasks ensuring both text and language fields.
+- Entity extraction with typed fields (ORG, PER, LOC).
+
+**Findings:**
+The model adhered precisely to the declared schemas, removing formatting ambiguity.
+JSON enforcement proved essential for reproducible pipelines, especially in applications that depend on strong typing
+(RAG agents, API interactions, etc.).
+
+## Summarization Pipeline
+A longer technical passage (flash memory write-protection specification) was summarized using a classic **map-reduce**
+chain:
+
+1. **Chunk Splitting:** Recursive text splitter (700 char, 100 overlap).
+2. **Chunk Summaries:** Local 2–3 bullet summaries per segment.
+3. **Global Consolidation:** A reducer merged overlapping ideas into a short unified summary.
+
+**Outcome:**
+The final summary captured all essential mechanisms—power-up behavior, write enabling, block locking, and protection
+schemes—while eliminating redundancy.
+This demonstrated how chunked summarization maintains quality even with long, highly technical documentation.
+
+## Retrieval-Augmented Generation (RAG)
+A simple RAG pipeline was implemented using:
+- FAISS vector store
+- Recursive splitting of three short documents
+- OpenAI embeddings
+- A strict “respond only with context” system prompt
+
+Queries were answered exclusively from retrieved text, enabling controlled grounding.
+
+**Results:**
+The system reliably returned context-bound answers and responded accordingly.
+This validated retrieval chains as a robust method for maintaining factual constraints, even with small LLMs.
+
+## Overall Performance and Analysis
+The experiments collectively show how modular LangChain components interact with LLMs to provide:
+
+- **Deterministic control** (temperature schedules, system prompts)
+- **Format reliability** (Pydantic schemas with structured output)
+- **Efficient summarization** (chunk+reduce pipelines)
+- **Grounded QA** (FAISS + RAG chains)
+
+Each module enhances specific aspects of LLM-based systems, from stability to factuality.
+
+## Limitations and Practical Notes
+- Some prompts revealed minor variations in label formatting, emphasizing the need for strong constraints if downstream
+tasks require strict outputs.
+- Retrieval quality is directly dependent on embedding granularity and chunking strategy.
+- JSON-structured outputs are powerful but can fail if prompts are underspecified or not clearly aligned with the schema.
+
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut4/14-langchain-openai-intro/
+- **Colab Link:** https://colab.research.google.com/drive/1svwfTx1XlXRZjTHtPnR8Hzw_yUuC2dgc?usp=sharing
