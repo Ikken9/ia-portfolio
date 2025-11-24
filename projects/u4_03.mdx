@@ -1,0 +1,74 @@
+---
+title: "LangGraph and Intelligent Agents: Implementing Multi-Step Systems"
+description: "Development of conversational agents with integrated tools using LangGraph and RAG"
+tags: ["LangGraph", "Agents", "RAG", "Tools", "Gradio"]
+idx: 18
+author: "Piero Saucedo"
+---
+
+Creating intelligent agents capable of orchestrating complex workflows and utilizing external tools represents a
+significant advancement in AI applications. This project implements a conversational agent system using LangGraph,
+integrating semantic search capabilities and custom tools within a structured workflow.
+
+## LangGraph Agent Architecture
+The system core is built on LangGraph, a framework that models agents as state graphs. The implementation defines an
+`AgentState` that manages message history and conversation state. The graph consists of two main nodes: the assistant
+that processes queries and the tools node that executes external functions.
+
+**Key Components:**
+- **State Management:** Agent state management with message history
+- **Tool Integration:** Set of tools for RAG search, status queries, and time
+- **Conditional Routing:** Decision system that determines when to use tools
+
+## Tools and RAG Implementation
+Three specialized tools were developed to extend the agent's capabilities. The `rag_search` tool performs semantic
+searches in a FAISS vector database indexed with domain documents. The `get_order_status` and `get_utc_time` tools
+provide specific functionalities for status queries and current time.
+
+The implemented RAG system uses OpenAI embeddings and similarity search to retrieve relevant documents. Documents are
+processed through recursive splitting with overlap to maintain context, creating a knowledge system that the agent can
+query for grounded responses.
+
+## Workflow and Decision Making
+
+The agent follows a reasoning flow where it evaluates each query to determine whether it can respond directly or needs
+to invoke tools. When it detects the need for external information, it activates the tools node and processes the
+results before generating the final response.
+
+**Interaction Example:**
+- Query about "LangGraph" → Direct response using model knowledge
+- Query about "RAG" → Activation of semantic search + contextual generation
+- Order status query → Use of specific tool + response
+
+## User Interface with Gradio
+A conversational interface was developed using Gradio that allows real-time interaction with the agent. The interface
+displays conversation history, tools used, and maintains session state. The implementation includes automatic history
+formatting and logging of invoked tools.
+
+## Evaluation and Use Cases
+The system demonstrated effectiveness in multiple scenarios:
+- **Conceptual Queries:** Explanation of frameworks and architectures
+- **Information Retrieval:** Domain-specific knowledge retrieval
+- **Transactional Operations:** Real-time status queries and information
+
+**Performance Metrics:**
+- Acceptable response time for interactive applications
+- Accuracy in conditional tool activation
+- Ability to maintain conversational context
+
+## Conclusions and Learnings
+The LangGraph implementation proved robust for orchestrating multi-step flows with conditional decision making. The
+graph architecture allows natural scalability for adding new tools and capabilities. The integrated RAG system provides
+factual grounding to responses, reducing hallucinations.
+
+**Key Lessons:**
+- LangGraph simplifies implementation of complex stateful agents
+- Integration of external tools significantly expands capabilities
+- Conditional routing system is crucial for cost and performance optimization
+- Gradio provides effective interface for rapid prototyping
+
+The presented architecture serves as a foundation for more complex production systems, with potential for integration
+with real APIs, corporate databases, and authentication systems.
+
+- **Colab Implementation:** https://colab.research.google.com/drive/1SGYelsLlIbh1JMYRcdDpVzuNC19s_sy9?usp=sharing
+- **Original Proposal:** https://juanfkurucz.com/ucu-ia/ut4/15-agents/
