@@ -1,6 +1,6 @@
 ---
 title: "A World Away: Exoplanet Detection with Machine Learning"
-description: "Integration of Kepler and TESS datasets with XGBoost-based classification for exoplanet detection — NASA Space Apps Challenge 2025"
+description: "Integration of Kepler and TESS datasets with XGBoost-based classification for exoplanet detection - NASA Space Apps Challenge 2025"
 tags: ["Exoplanets", "XGBoost", "Machine Learning", "Kepler", "TESS", "Astrophysics", "Classification"]
 idx: 12
 author: "Piero Saucedo"
@@ -12,11 +12,10 @@ By leveraging astrophysical data from NASA’s **Kepler** and **TESS** missions,
 approaches can enhance the identification and prioritization of celestial objects of interest.
 
 ## Experimental Framework
-
 Two official NASA catalogs were used as the foundation for this experiment:
 
-- **KOI (Kepler Objects of Interest)** — long-term, high-precision observations from the Kepler Space Telescope (2009–2018)
-- **TOI (TESS Objects of Interest)** — wide-field survey data from the Transiting Exoplanet Survey Satellite (2018–present)
+- **KOI (Kepler Objects of Interest)** - long-term, high-precision observations from the Kepler Space Telescope (2009–2018)
+- **TOI (TESS Objects of Interest)** - wide-field survey data from the Transiting Exoplanet Survey Satellite (2018–present)
 
 Both datasets were unified into a single, standardized structure with common astrophysical parameters:
 
@@ -83,7 +82,7 @@ Result: **0.9315**
 
 **Confusion Matrix Analysis:**
 The confusion matrix provided a detailed view of misclassifications. The model achieved high accuracy distinguishing
-false positives and confirmed exoplanets, with most confusion arising between `Candidate` and `Confirmed` — a reflection
+false positives and confirmed exoplanets, with most confusion arising between `Candidate` and `Confirmed` - a reflection
 of their inherent physical similarity in observed features such as transit depth and stellar temperature.
 
 These combined metrics validate both the **scientific consistency** and **robustness** of the classification pipeline.
@@ -113,23 +112,21 @@ This architecture ensures modularity, reproducibility, and smooth integration of
 | F1-Score (Macro) | Balanced class-wise harmonic mean | **0.8017** |
 | ROC-AUC (One-vs-Rest) | Probabilistic discrimination power | **0.9315** |
 | Balanced Accuracy | Mean recall across classes | **0.78** |
-| Test Split | Independent 25% subset | — |
-| Classes | False Positive / Candidate / Confirmed | — |
+| Test Split | Independent 25% subset | - |
+| Classes | False Positive / Candidate / Confirmed | - |
 
 The confusion matrix confirmed expected astrophysical overlap between candidate and confirmed categories, but overall
 classification reliability was high across all groups.
 
 ## Interpretability and Feature Importance
-
 Feature importance analysis revealed the dominant role of:
-- **Transit Depth** and **Planet Radius** — key discriminators of exoplanet likelihood
-- **Signal-to-Noise Ratio (SNR)** — crucial for distinguishing valid detections
-- **Stellar Parameters** — especially `stellar_temp` and `stellar_radius`, influencing transit visibility
+- **Transit Depth** and **Planet Radius** - key discriminators of exoplanet likelihood
+- **Signal-to-Noise Ratio (SNR)** - crucial for distinguishing valid detections
+- **Stellar Parameters** - especially `stellar_temp` and `stellar_radius`, influencing transit visibility
 
 These relationships align with established astrophysical principles, validating the model’s physical interpretability.
 
 ## Limitations and Challenges
-
 Despite solid quantitative performance, several challenges persisted:
 - Residual **class imbalance** introduced variability in minority class precision
 - Physical overlap between **candidates** and **confirmed planets** limited boundary separability
@@ -137,7 +134,6 @@ Despite solid quantitative performance, several challenges persisted:
 - Model interpretability, while improved, still requires domain expert validation for scientific deployment
 
 ## Conclusions and Future Directions
-
 This project demonstrates the feasibility of automating exoplanet classification using supervised learning pipelines.
 The combination of **data unification, preprocessing, and gradient boosting** yielded a scientifically meaningful and
 computationally efficient model.
@@ -149,5 +145,5 @@ computationally efficient model.
 - Deploying the system as a public **API service** for researchers
 - Integrating educational visualizations for outreach and citizen science
 
-Through this work, we establish a reproducible and interpretable machine learning framework that supports the discovery of
-new worlds — advancing both scientific inquiry and accessibility in exoplanet research.
+Through this work, we establish a reproducible and interpretable machine learning framework that supports the discovery
+of new worlds - advancing both scientific inquiry and accessibility in exoplanet research.
