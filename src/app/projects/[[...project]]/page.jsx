@@ -177,7 +177,6 @@ async function getMDXFiles() {
                     fullPath: relativePath,
                     category: baseDir || 'root',
                     metadata,
-                    lastModified: stats.mtime,
                     size: stats.size
                 })
             }
@@ -212,6 +211,9 @@ async function getMDXContent(mdxPath) {
 
     try {
         const source = fs.readFileSync(filePath, 'utf8')
+        const codeBlocks = (source.match(/```[\s\S]*?```/g) || []).length
+        const headings = (source.match(/^#{1,6}\s+/gm) || []).length
+        const images = (source.match(/<MDXImage\s+[^>]*>/g) || []).length;
         const stats = fs.statSync(filePath)
 
         // Compile MDX
@@ -238,7 +240,10 @@ async function getMDXContent(mdxPath) {
             stats,
             filePath,
             readTime,
-            wordCount: words
+            wordCount: words,
+            codeBlocks,
+            headings,
+            images
         }
     } catch (err) {
         console.error('Error reading MDX:', err)
@@ -349,7 +354,7 @@ export default async function ProjectsPage({ params }) {
     const mdxData = await getMDXContent(pathString)
     if (!mdxData) notFound()
 
-    const { content, frontmatter, stats, readTime, wordCount } = mdxData
+    const { content, frontmatter, stats, readTime, wordCount, codeBlocks, headings, images } = mdxData
 
     return (
         <div className="min-h-screen text-white pt-32 pb-20">
@@ -425,20 +430,20 @@ export default async function ProjectsPage({ params }) {
                         <h3 className="text-lg font-semibold text-cyan-400 mb-4">Document Information</h3>
                         <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
-                                <span className="text-slate-500">Size:</span>
+                                <div className="text-slate-500">Size</div>
                                 <div className="text-slate-300 mt-1">{formatFileSize(stats.size)}</div>
                             </div>
                             <div>
-                                <span className="text-slate-500">Words:</span>
+                                <div className="text-slate-500">Words</div>
                                 <div className="text-slate-300 mt-1">~{wordCount}</div>
                             </div>
                             <div>
-                                <span className="text-slate-500">Reading time:</span>
+                                <div className="text-slate-500">Reading time</div>
                                 <div className="text-slate-300 mt-1">{readTime} minutes</div>
                             </div>
                             <div>
-                                <span className="text-slate-500">Last modified:</span>
-                                <div className="text-slate-300 mt-1">{stats.mtime.toLocaleDateString()}</div>
+                                <div className="text-slate-500">Images</div>
+                                <div className="text-slate-300 mt-1">{images}</div>
                             </div>
                         </div>
                     </div>
@@ -451,7 +456,6 @@ export default async function ProjectsPage({ params }) {
 export async function generateStaticParams() {
     const baseDir = path.join(process.cwd(), 'projects')
 
-    // Recursively walk through `projects/` to get all .mdx files
     function walk(dir) {
         const entries = fs.readdirSync(dir, { withFileTypes: true })
         let paths = []

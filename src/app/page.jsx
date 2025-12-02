@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Code2, ExternalLink, Github, Linkedin, ChevronDown } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, ChevronDown } from 'lucide-react';
 import Link from "next/link";
 
 
