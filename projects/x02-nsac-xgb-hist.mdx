@@ -1,0 +1,46 @@
+---
+title: "Comparative Evaluation: XGBoost vs. Histogram-Based Classifier for Exoplanet Classification"
+description: "Performance analysis of gradient boosting approaches on Kepler-TESS astronomical data"
+tags: ["XGBoost", "Histogram-Based Gradient Boosting", "Exoplanet Classification", "Astroinformatics"]
+idx: 21
+author: "Piero Saucedo"
+---
+
+This comparative study evaluates two gradient boosting approaches (XGBoost and Histogram-Based Gradient Boosting) for
+classifying exoplanet candidates using unified Kepler-TESS data. Both models underwent identical preprocessing with
+scaling, median imputation, and SMOTE balancing, isolating algorithmic differences as the performance variable.
+
+## Overall Performance Comparison
+
+| Model | Macro F1-Score | ROC-AUC (OvR) | Performance Delta |
+|-------|---------------|---------------|-------------------|
+| **XGBoost** | **0.8017** | **0.9315** | - |
+| **Histogram-Based Classifier** | 0.7971 | 0.9302 | - |
+| **Difference** | **0.0046** | **0.0013** | Minimal |
+
+The histogram-based classifier demonstrated nearly identical performance to XGBoost despite its simplified approach.
+This marginal difference indicates the predictive signal originates primarily from data characteristics rather than
+model sophistication.
+
+## Class-Level Behavior Analysis
+Both models exhibited similar classification patterns across the three categories: False Positive (0), Candidate (1),
+and Confirmed (2). The Confirmed class showed the most noticeable performance gap, with XGBoost maintaining higher
+recall while the histogram classifier slightly under-predicted this category. Both approaches struggled similarly with
+the astrophysically ambiguous boundary between Candidate and Confirmed objects, reinforcing that the classification
+challenge stems from inherent data overlap rather than algorithmic limitations.
+
+## Computational Efficiency Insights
+The histogram-based approach offered significant computational advantages, with faster training and reduced resource
+requirements suitable for rapid prototyping and resource-constrained deployments. This efficiency makes it particularly
+valuable for large-scale batch processing of incoming survey data. Conversely, XGBoost provided finer regularization
+control and slightly superior class separation, which may justify its use when maximum precision is required for
+scientific analysis.
+
+## Conclusion
+This comparison demonstrates that approximate gradient boosting can achieve nearly identical scientific performance
+to exact tree-split methods at substantially reduced computational cost. The findings support a hybrid workflow strategy
+where lightweight histogram models handle real-time predictions and initial screenings, while more sophisticated methods
+like XGBoost perform detailed offline vetting. Both approaches validate the robustness of the unified Kepler-TESS
+feature framework for automated exoplanet classification.
+
+- **Notebook:** https://colab.research.google.com/drive/1KUaPetEWK25VHnDWxE5fEmFK2IgAfIRS?usp=sharing

@@ -11,13 +11,11 @@ training strategies. This experimental study systematically evaluates different 
 using CIFAR-10 image classification as the benchmark task.
 
 ## Experimental Framework
-
 The CIFAR-10 dataset was preprocessed with pixel values normalized to `[-1, 1]` and flattened into 3072-element vectors
 to accommodate Multi-Layer Perceptron (MLP) architectures. A baseline model with two dense layers of 64 neurons each
 established the performance reference point for comparative analysis.
 
 ## Architecture and Initialization Experiments
-
 The first phase focused on architectural variations and initialization strategies:
 
 **Architecture Modifications:**
@@ -36,7 +34,6 @@ validation performance was inconsistent, revealing the fundamental challenge of 
 image data.
 
 ## Optimizer Performance Analysis
-
 The second phase maintained fixed architectures while systematically evaluating optimization algorithms:
 
 **Adam Optimization:**
@@ -56,7 +53,6 @@ The second phase maintained fixed architectures while systematically evaluating 
 - **Performance Summary:** Adam and AdamW provided fastest convergence, while SGD offered robustness at the cost of performance
 
 ## Callback Implementation and Training Control
-
 The third phase introduced automated training control mechanisms:
 
 **Early Stopping:** Configuration with patience parameters to halt training when validation metrics plateaued,
@@ -74,7 +70,6 @@ model selection.
 termination points, smoother convergence patterns, and systematic model version control.
 
 ## Comprehensive Performance Results
-
 Experimental results consolidated in `experiment_results.csv` revealed the top-performing configurations:
 
 | Rank | Experiment                       | Test Acc | Val Acc | Train Acc | Parameters | Time (s) |
@@ -100,7 +95,7 @@ This represents a significant improvement over initial experiments but reveals a
 **Class-wise Performance:** Confusion matrix analysis revealed significant variation in classification accuracy across
 different CIFAR-10 categories, with certain classes proving substantially more challenging than others.
 
-**Architectural Constraints:** The fundamental limitation of MLP architectures became apparent—their inability to
+**Architectural Constraints:** The fundamental limitation of MLP architectures became apparent: their inability to
 effectively leverage spatial structure and local correlations in image data.
 
 **Training Dynamics:** While callbacks successfully stabilized training and improved model selection, they could not

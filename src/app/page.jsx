@@ -15,7 +15,7 @@ const ModernMLPortfolio = () => {
     const projects = [
         {
             title: "A World Away: Exoplanet Detection with Machine Learning",
-            description: "Integration of Kepler and TESS datasets with XGBoost-based classification for exoplanet detection — NASA Space Apps Challenge 2025.",
+            description: "Integration of Kepler and TESS datasets with XGBoost-based classification for exoplanet detection - NASA Space Apps Challenge 2025.",
             tags: ["Exoplanets", "XGBoost", "Machine Learning", "Kepler", "TESS", "Astrophysics", "Classification"],
             gradient: "from-cyan-500 to-blue-600",
             link: "/projects/nasa_sac",
